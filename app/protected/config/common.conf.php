@@ -29,10 +29,6 @@ $config['APP_URL'] = 'http://'.$_SERVER['HTTP_HOST'].$config['SUBFOLDER'];
 $config['AUTOROUTE'] = TRUE;
 $config['DEBUG_ENABLED'] = TRUE;
 
-/**
- * Path to store logs/profiles when using with the logger tool. This is needed for writing log files and using the log viewer tool
- */
-//$config['LOG_PATH'] = '/var/logs/';
 
 /**
  * defined either Document or Route to be loaded/executed when requested page is not found

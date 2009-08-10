@@ -27,7 +27,6 @@ class Doo{
     private static $_conf;
     private static $_logger;
     private static $_db;
-	private static $_cache;
 
 	/**
 	 * @return DooConfig configuration settings defined in <i>common.conf.php</i>, auto create if the singleton has not been created yet.
@@ -77,38 +76,6 @@ class Doo{
 	}
 
 	/**
-	 * @param string $cacheType Cache type, file, apc, memcache. Default is file based cache.
-	 * @return DooCache file/apc/memcache caching tool, singleton, auto create if the singleton has not been created yet.
-	 */
-	public static function cache($cacheType='file') {
-		if($cacheType=='file'){
-			if(isset(self::$_cache['file']))
-				return self::$_cache['file'];
-				
-			self::loadCore('cache/DooCache');
-			self::loadCore('cache/DooFileCache');
-			self::$_cache['file'] = DooFileCache::cache();
-			return self::$_cache['file'];
-		}
-		else if($cacheType=='apc'){
-			if(isset(self::$_cache['apc']))
-				return self::$_cache['apc'];
-				
-			self::loadCore('cache/DooCache');
-			self::loadCore('cache/DooApcCache');
-			self::$_cache['apc'] = DooApcCache::cache();
-			return self::$_cache['apc'];
-		}
-		//settings for cache done in common.conf.php
-		/*
-		 * $config['CACHE_PATH'] = '/var/cache/';   //This is for file based cache only.
-		 * $config['APCCACHE'] = array('settings'=>'some values');   //This is for APC cache
-		 * $config['MEMCACHE'] = array('settings'=>'some values');   //This is for fMemcache.
-		 * use in code. Doo::cache()->set()    Doo::cache('apc')->set()     Doo::cache('memcache')->set()
-		 */
-	}
-	
-	/**
      * Imports the definition of class(es) and tries to create an object/a list of objects of the class.
      * @param string|array $class_name Name(s) of the class to be imported
      * @param string $path Path to the class file
@@ -125,10 +92,10 @@ class Doo{
             if($createObj)
                 $obj=array();
 
-            foreach ($class_name as $one) {
-            	require_once($path . "$one.php");
+            for($i=0;$i<sizeof($class_name);$i++){
+                require_once($path . "$class_name.php");
                 if($createObj)
-                    $obj[] = new $one;
+                    $obj[] = new $class_name;
             }
 
             if($createObj)
@@ -182,32 +149,6 @@ class Doo{
 	public static function loadCore($class_name){
 		require_once(self::conf()->BASE_PATH ."$class_name.php");
 	}
-	
-	/**
-	 * Provides auto loading feature. To be used with the Magic method __autoload
-	 * @param string $classname Class name to be loaded.
-	 */
-	public static function autoload($classname){
-		$class['DooSiteMagic'] = 'app/DooSiteMagic';
-		$class['DooWebApp'] = 'app/DooWebApp';
-		$class['DooConfig'] = 'app/DooConfig';
-		$class['DooDigestAuth'] = 'auth/DooDigestAuth';
-		$class['DooCache'] = 'cache/DooCache';
-		$class['DooFileCache'] = 'cache/DooFileCache';
-		$class['DooController'] = 'controller/DooController';
-		$class['DooDbExpression'] = 'db/DooDbExpression';
-		$class['DooModelGen'] = 'db/DooModelGen';
-		$class['DooSqlMagic'] = 'db/DooSqlMagic';
-		$class['DooRestClient'] = 'helper/DooRestClient';
-		$class['DooUrlBuilder'] = 'helper/DooUrlBuilder';
-		$class['DooLog'] = 'helper/DooLog';
-		$class['DooLoader'] = 'uri/DooLoader';
-		$class['DooUriRouter'] = 'uri/DooUriRouter';
-		$class['DooView'] = 'view/DooView';
-		
-		if(isset($class[$classname]))
-			self::loadCore($class[$classname]);
-	}
 
     /**
      * Simple benchmarking. To used this, set <code>$config['START_TIME'] = microtime(true);</code> in <i>common.conf.php</i> .
@@ -225,11 +166,11 @@ class Doo{
     }
 
 	public static function powerby(){
-		return 'Powered by <a href="http://www.doophp.com/">DooPHP Framework</a>.';
+		return 'Powered by <a href="http://www.doophp.com/">Doo PHP Framework</a>.';
 	}
 
 	public static function version(){
-		return '1.1';
+		return '1.0';
 	}
 }
 

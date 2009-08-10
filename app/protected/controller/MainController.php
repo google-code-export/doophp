@@ -1,49 +1,19 @@
 <?php
 /**
- * MainController
- * Feel free to delete the methods and replace them with your own code.
+ * Description of MainController
  *
  * @author darkredz
  */
 class MainController extends DooController{
 
     public function index(){
-		//Just replace these
-		Doo::loadCore('app/DooSiteMagic');
-		DooSiteMagic::displayHome();	
+		echo '<h1>It Works!</h1>';
     }
-	
-	public function allurl(){
-		Doo::loadCore('app/DooSiteMagic');
-		DooSiteMagic::showAllUrl();	
-	}
-	
-    public function debug(){
-		Doo::loadCore('app/DooSiteMagic');
-		DooSiteMagic::showDebug($this->params['filename']);
-    }
-	
-	public function gen_sitemap_controller(){
-		//This will replace the routes.conf.php file
-		Doo::loadCore('app/DooSiteMagic');
-		DooSiteMagic::buildSitemap(true);		
-		DooSiteMagic::buildSite();
-	}
-	
-	public function gen_sitemap(){
-		//This will write a new file,  routes2.conf.php file
-		Doo::loadCore('app/DooSiteMagic');
-		DooSiteMagic::buildSitemap();		
-	}
-	
-	public function gen_site(){
-		Doo::loadCore('app/DooSiteMagic');
-		DooSiteMagic::buildSite();
-	}
-	
-    public function gen_model(){
+
+    public function gen_models(){
         Doo::loadCore('db/DooModelGen');
-        DooModelGen::gen_mysql();
+        $gen = new DooModelGen;
+        $gen->gen_mysql();
     }
 
 }

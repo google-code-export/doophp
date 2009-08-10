@@ -6,10 +6,10 @@ Thank you for using DooPHP - a high-performance MVC based PHP framework.
 
 INSTALLATION
 ------------
+Installation guide can be found at http://www.doophp.com/doc/guide/start/install
 
 Please make sure the release file is unpacked under a Web-accessible
-directory. You have to put it under the root directory for the app & demos to work. 
-
+directory. You have to put it under the root directory for the demos to work or change the config files.
 You shall see the following files and directories:
 
       demos/				demos
@@ -18,20 +18,6 @@ You shall see the following files and directories:
       LICENSE.txt			license of DooPHP
       README.txt			this file
 
-
-If you placed it elsewhere, please change the app or demos configurations in protected/config/common.conf.php
-	
-      $config['SITE_PATH'] = 'C:/wamp/www/myfolderapp/';
-      $config['BASE_PATH'] = 'C:/wamp/www/dooframework/';
-	  
-	  
-If your app is in a sub directory, please change the following setting:
-      
-	  $config['SUBFOLDER'] = '/myfolderapp/';
-
-*This example can be accessed at http://localhost/myfolderapp/
-
-More details on installation can be found at http://www.doophp.com/doc/guide/start/install
 
 REQUIREMENTS
 ------------

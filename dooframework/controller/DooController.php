@@ -31,7 +31,6 @@
  * load()
  * language()
  * accept_type()
- * render()
  * setContentType()
  * is_SSL()
  * view()
@@ -70,8 +69,8 @@ class DooController {
      */
     public $autoroute = TRUE;
     
-    protected $_load;
-    protected $_view;
+    private $_load;
+    private $_view;
 
     /**
      * Set PUT request variables in a controller. This method is to be used by the main web app class.
@@ -113,17 +112,6 @@ class DooController {
 
         return $this->_view;
     }
-	
-	/**
-     * Short hand for $this->view()->render() Renders the view file.
-     * @param string $file Template file name (without extension name)
-     * @param array $data Associative array of the data to be used in the Template file. eg. <b>$data['username']</b>, you should use <b>{{username}}</b> in the template.
-     * @param bool $process If TRUE, checks the template's last modified time against the compiled version. Regenerates if template is newer.
-     * @param bool $forceCompile Ignores last modified time checking and force compile the template everytime it is visited.
-     */
-	public function render($file, $data=NULL, $process=NULL, $forceCompile=false){
-		$this->view()->render($file, $data, $process, $forceCompile);
-	}
 
     /**
      * Get the client accept language from the header
