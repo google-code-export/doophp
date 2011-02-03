@@ -484,7 +484,6 @@ class Doo{
                 }
                 
                 if($rs != $rsExisting){
-                    echo 'not same';
                     if(!file_exists($autoloadConfigFolder)){
                         mkdir($autoloadConfigFolder);
                     }
