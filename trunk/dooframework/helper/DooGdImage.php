@@ -827,7 +827,7 @@ class DooGdImage {
 
 		if (!file_exists($this->uploadPath)) {
 			Doo::loadHelper('DooFile');
-			$fileManager = new DooFile(0777);
+			$fileManager = new DooFile();
 			$fileManager->create($this->uploadPath);
 		}
 
