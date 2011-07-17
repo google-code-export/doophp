@@ -201,6 +201,12 @@ class DooConfig{
      * @var string
      */
     public $APP_NAMESPACE_ID;
+    
+    /**
+     * Default chmod to be used with classes such as DooFile. Default value is 0777
+     * @var int
+     */
+    public $CHMOD_DEFAULT = 0777;
 	
     /**
      * Set the configurations. SITE_PATH, BASE_PATH and APP_URL is required

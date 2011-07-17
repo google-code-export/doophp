@@ -19,8 +19,15 @@ class DooFile {
 
     public $chmod;
 
-    public function  __construct($chmod=0777) {
-        $this->chmod = $chmod;
+    public function  __construct($chmod=null) {
+        if($chmod!==null)
+            $this->chmod = $chmod;
+        else{
+            if( class_exists('Doo') )
+                $this->chmod = Doo::conf()->get('CHMOD_DEFAULT', 0777);
+            else
+                $this->chmod = 0777;            
+        }
     }
 
     /**
