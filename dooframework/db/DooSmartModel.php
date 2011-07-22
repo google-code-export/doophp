@@ -219,7 +219,7 @@ class DooSmartModel{
         }
         else{
             //need to store the list of Model cache to be purged later on for Memory based cache.
-            $keysId = Doo::conf(self::$cacheMode)->SITE_PATH . 'mdl_'.self::$className;
+            $keysId = Doo::conf(self::$cacheMode)->SITE_PATH . Doo::conf()->PROTECTED_PATH . 'mdl_'.self::$className;
             if($keys = Doo::cache(self::$cacheMode)->get($keysId)){
                 $listOfModelCache = $keys->getArrayCopy();
                 $listOfModelCache[] = Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_PATH . $id;
