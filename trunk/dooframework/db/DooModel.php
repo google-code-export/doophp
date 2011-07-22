@@ -76,20 +76,32 @@ class DooModel{
      * @var string
      */
     protected static $className = __CLASS__;
+    
+    /**
+     * DB object
+     * @var DooSqlMagic
+     */
+    protected $dbObject;
 
     /**
      * Constructor of a Model. Sets the model class properties with a list of keys & values.
      * @param array $properties Array of data (keys and values) to set the model properties
+     * @param DooSqlMagic $dbOject DB object to be used instead of the default DooSqlMagic instance from Doo::db()
      */
-    public function __construct($properties=null){
+    public function __construct($properties=null, $dbOject=null){
         if($properties!==null){
             foreach($properties as $k=>$v){
                 if(in_array($k, $this->_fields))
                     $this->{$k} = $v;
             }
         }
+        if($dbOject===null){
+            $this->dbObject = Doo::db();
+        }else{
+            $this->dbObject = $dbOject;        
+        }
     }
-
+    
     /**
      * Setup the model. Use if needed with constructor.
      *
@@ -140,7 +152,15 @@ class DooModel{
      * @return DooSqlMagic
      */
     public function db(){
-        return Doo::db();
+        return $this->dbObject;
+    }
+    
+    /**
+     * Set DB object to be used instead of the default DooSqlMagic instance from Doo::db()
+     * @param DooSqlMagic $dbOject DB object
+     */
+    public function setDb($dbObject){
+        $this->dbObject = $dbObject;
     }
     
     /**
@@ -782,3 +802,4 @@ class DooModel{
     }
 
 }
+
