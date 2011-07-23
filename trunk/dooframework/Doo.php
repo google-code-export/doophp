@@ -24,6 +24,7 @@
  */
 class Doo{
     protected static $_app;
+    protected static $_cliApp;
     protected static $_conf;
     protected static $_logger;
     protected static $_db;
@@ -90,15 +91,25 @@ class Doo{
     }
 
     /**
-	 * @param string $appType The type of application you want. Options are: 'DooWebApp' and 'DooCliApp'
-     * @return DooWebApp|DooCliApp the application singleton, auto create if the singleton has not been created yet.
+     * @return DooWebApp the application instance.
      */
-    public static function app($appType='DooWebApp'){
+    public static function app(){
         if(self::$_app===NULL){
-            self::loadCore('app/' . $appType);
-            self::$_app = new $appType();
+            self::loadCore('app/DooWebApp');
+            self::$_app = new DooWebApp;
         }
         return self::$_app;
+    }
+
+    /**
+     * @return DooCliApp the CLI application instance.
+     */
+    public static function cliApp(){
+        if(self::$_cliApp===NULL){
+            self::loadCore('app/DooCliApp');
+            self::$_cliApp = new DooCliApp;
+        }
+        return self::$_cliApp;
     }
 
     /**

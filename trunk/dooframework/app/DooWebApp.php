@@ -34,6 +34,45 @@ class DooWebApp{
         $this->throwHeader( $this->routeTo() );
     }
     
+    /**
+     * Run the web application from a http request or a CLI execution.
+     */
+    public function autorun(){
+        $opt = getopt('u:');
+        if(isset($opt['u'])===true){
+            $this->runFromCli();
+        }else{
+            $this->run();
+        }
+    }
+    
+    /**
+     * Run the web application from a CLI execution. Execution through this method will set Doo::conf()->FROM_CLI to true.
+     * Options required in CLI:
+     * <code>
+     *   // -u (required) URI: any route you have in your application
+     *   -u="/any/uri/route/"
+     * 
+     *   // -m (optional) Request method: post, put, get, delete. Default is get.
+     *   -m="get"
+     * </code>
+     */
+    public function runFromCli(){
+        $opt = getopt('u:m::');
+        if(isset($opt['u'])===true){
+            $uri = $opt['u'];
+
+            if($uri[0]!='/')
+                $uri = '/' . $uri;
+
+            Doo::conf()->SUBFOLDER = '/';
+            $_SERVER['REQUEST_URI'] = $uri;
+            $_SERVER['REQUEST_METHOD'] = (isset($opt['m'])) ? $opt['m'] : 'GET';
+            Doo::conf()->FROM_CLI = true;
+            $this->run();
+        }        
+    }
+    
      /**
      * Handles the routing process.
      * Auto routing, sub folder, subdomain, sub folder on subdomain are supported.
