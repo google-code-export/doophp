@@ -207,6 +207,12 @@ class DooConfig{
      * @var int
      */
     public $CHMOD_DEFAULT = 0777;
+    
+    /**
+     * Indicating if the current execution if initiated from a CLI call.
+     * @var bool
+     */
+    public $FROM_CLI = false;
 	
     /**
      * Set the configurations. SITE_PATH, BASE_PATH and APP_URL is required
