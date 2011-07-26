@@ -29,30 +29,29 @@
  * $autoroute
  * $vdata
  * $renderMethod
- * init_put_vars()
+ * initPutVars()
  * load()
- * language()
- * accept_type()
- * render()
- * renderc()
- * setContentType()
- * is_SSL()
- * view()
  * db()
- * cache()
  * acl()
  * beforeRun()
- * isAjax()
- * renderLayout()
- * clientIP()
+ * cache()
  * saveRendered()
  * saveRenderedC()
- * toXML()
- * toJSON()
- * viewRenderAutomation()
+ * view()
+ * render()
+ * renderc()
+ * language()
+ * acceptType()
+ * setContentType()
+ * clientIP()
+ * afterRun()
  * getKeyParam()
  * getKeyParams()
- * afterRun()
+ * viewRenderAutomation()
+ * isAjax()
+ * isSSL()
+ * toXML()
+ * toJSON()
  * </code>
  *
  * You still have a lot of freedom to name your methods and properties other than names mentioned.
@@ -108,13 +107,6 @@ class DooController {
     protected $_load;
     protected $_view;
 
-    /**
-     * Use initPutVars() instead
-     * @deprecated deprecated since version 1.3
-     */
-    public function init_put_vars(){
-        parse_str(file_get_contents('php://input'), $this->puts);
-    }
 
     /**
      * Set PUT request variables in a controller. This method is to be used by the main web app class.
@@ -249,15 +241,6 @@ class DooController {
 			$langcode = (!empty($langcode[0])) ? explode('-', $langcode[0]) : $langcode;
 		return is_array($langcode) ? $langcode[0] : $langcode;
 	}
-
-    /**
-     * Use acceptType() instead
-     * @deprecated deprecated since version 1.3
-     * @return string Client accept type
-     */
-    public function accept_type(){
-        return $this->acceptType();
-    }
 
     /**
      * Get the client specified accept type from the header sent
@@ -467,14 +450,6 @@ class DooController {
             return TRUE;
         }
         return FALSE;
-    }
-
-    /**
-     * Use isSSL() instead
-     * @deprecated deprecated since version 1.3
-     */
-    public function is_SSL(){
-        return $this->isSSL();
     }
 
     /**
