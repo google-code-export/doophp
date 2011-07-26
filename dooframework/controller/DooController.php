@@ -51,6 +51,7 @@
  * toJSON()
  * viewRenderAutomation()
  * getKeyParam()
+ * getKeyParams()
  * afterRun()
  * </code>
  *
@@ -402,7 +403,25 @@ class DooController {
                 return $this->params[$valueIndex];
         }
     }
-
+    
+    /**
+     * Retrieve an array of keys & values from URI accessed from an auto route.
+     * Example with a controller named UserController and a method named listAll():
+     * <code>
+     * //URI is http://localhost/user/list-all/id/11/type/admin
+     * $this->getKeyParam( array('id', 'type') );   //returns array('id'=>11, 'type'=>'admin')
+     * </code>
+     * @param type $keys
+     * @return type 
+     */
+    public function getKeyParams($keys){
+        $params = array();        
+        foreach($keys as $k){
+            $params[$k] = $this->getKeyParam($k);
+        }
+        return $params;        
+    }
+    
     /**
      * Controls the automated view rendering process.
      */
@@ -628,11 +647,5 @@ class DooController {
 		}
         return $rs;
     }
-
-	public function  __call($name,  $arguments) {
-		if ($name == 'renderLayout') {
-			throw new Exception('renderLayout is no longer supported by DooController. Please use $this->view()->renderLayout instead');
-		}
-	}
-
+    
 }
