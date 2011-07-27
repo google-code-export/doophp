@@ -435,6 +435,13 @@ class Doo{
             
         //controller
 		$class['DooController'] = 'controller/DooController';
+		$class['DooCliController'] = 'controller/DooCliController';
+		$class['DooBDDController'] = 'controller/DooBDDController';
+        
+        //ext/ArrBdd
+		$class['ArrBDD'] = 'ext/ArrBDD/ArrBDD';
+		$class['ArrBDDSpec'] = 'ext/ArrBDD/ArrBDDSpec';
+		$class['ArrMock'] = 'ext/ArrBDD/ArrMock';
         
         //db
 		$class['DooDbExpression']    = 'db/DooDbExpression';
