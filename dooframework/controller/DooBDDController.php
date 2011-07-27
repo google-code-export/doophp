@@ -102,8 +102,12 @@ class DooBDDController extends DooController{
         $this->result = array();
 
         foreach($list as $path){
+            $pathinfo = pathinfo($path);
+            if($pathinfo['extension']!=='php') continue;
+            
             require_once $path;
-            $cls = substr(basename($path), 0,-4);
+            $cls = explode('.', $pathinfo['filename']);
+            $cls = $cls[0];
 
             $obj = new $cls;
             $section = $obj->getSectionName();
