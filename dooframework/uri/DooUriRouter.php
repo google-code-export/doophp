@@ -264,14 +264,14 @@ class DooUriRouter{
 		//$this->log('Trimmed off subfolder from Request Uri to give: ' . $requestedUri);
 
 		// Remove index.php from URL if it exists
-		if (0 === strpos($requestedUri, '/index.php')) {
+		if (strpos($requestedUri, '/index.php') === 0) {
 			$requestedUri = substr($requestedUri, 10);
 			//$this->log('Trimmed off the /index.php from Request Uri to give: ' . $requestedUri);
-			if ($requestedUri == '') {
+			if ($requestedUri === '') {
 				$requestedUri = '/';
 			}
 		}
-
+        
 		// Remove any trailing slashes from Uri except the first / of a uri (Root)
 		//Strip out the additional slashes found at the end. If first character is / then leaves it alone
 		$end = strlen($requestedUri) - 1;
@@ -364,6 +364,10 @@ class DooUriRouter{
 				// If first part of uri not match first part of route then skip.
 				// We expect ALL routes at this stage to begin with a static segment.
 				// Note: We exploded with a leading / so element 0 in both arrays is an empty string
+
+                //Skip checking forif catchall is used and URI is http://domain/index.phpxxxxxxx
+                if($requestedUri[0]!=='/') continue;
+                
 				if (str_replace($uriExtension, "", $uriParts[1]) !== $routeParts[1]) {
 					//$this->log('First path not match');
 					continue;
