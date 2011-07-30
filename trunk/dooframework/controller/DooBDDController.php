@@ -17,16 +17,10 @@
  * 
  * Example: You can access the BDD results from http://yourappdomain/bdd/run
  * To test a certain section(using auto route): http://yourappdomain/bdd/run/section/Section Name 
+ * To include subject in BDD result, use subject/true: http://yourappdomain/bdd/run/subject/true
+ * To change subject view to use print_r() instead of the default var_dump(): http://yourappdomain/bdd/run/subject/print_r
  * <code>
  * class BDDController extends DooBDDController{
- *     // include subject in result, default is false.
- *     protected $includeSubject = true;
- * 
- *     public function __construct() {
- *         $this->bdd = new ArrBDD;
- *         // change subject view to use print_r() instead of the default var_dump()
- *         $this->bdd->subjectView = ArrBDD::SUBJECT_PRINT_R;
- *     } 
  *     
  *     public function run(){
  *         $this->executeTest();
@@ -69,6 +63,12 @@ class DooBDDController extends DooController{
         $this->bdd = new ArrBDD;
     }
     
+    public function beforeRun($resource, $action) {
+        $subject = $this->getKeyParam('subject');
+        $this->includeSubject = (bool)$subject;
+        $this->bdd->subjectView = ($subject!=='true' && $subject!=='false')? $subject: ArrBDD::SUBJECT_VAR_DUMP;        
+    }
+
     /**
      * Enabled via AUTOROUTE. 
      */
