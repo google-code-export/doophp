@@ -160,7 +160,7 @@ class DooWebApp{
             list($controller_name, $method_name, $method_name_ori, $params, $moduleName )= $router->auto_connect(Doo::conf()->SUBFOLDER, (isset($this->route['autoroute_alias'])===true)?$this->route['autoroute_alias']:null );
 
             if(empty($this->route['autoroute_force_dash'])===false){
-                if($method_name!=='index' && $method_name===$method_name_ori && ctype_lower($method_name_ori)===false){
+                if($method_name!=='index' && $method_name===$method_name_ori && $method_name_ori[0]!=='_' && ctype_lower($method_name_ori)===false){
                     $this->throwHeader(404);
                     return;
                 }
