@@ -60,21 +60,63 @@ class DooUrlBuilder {
     public static function url2($controller, $method, $param=null, $addAppUrl=false){
         $route = Doo::app()->route;
         $routename = null;
-        foreach($route as $req=>$r){
+        
+        foreach($route as $req=>$r){            
+            if(is_array($r)===false) continue;
+            
             foreach($r as $rname=>$value){
-                if($value[0]==$controller && $value[1]==$method){
+                //normal routes                
+                if(isset($value[0]) && $value[0]==$controller && $value[1]==$method){
                     $routename = $rname;
                     break;
                 }
+                else if($rname==='catchall'){
+                    $catchallRoutes[] = $value;
+                }
             }
+            if(!empty($routename)) break;
+        }                  
+        
+        if(empty($routename) && !empty($catchallRoutes)){
+            // catchall routes
+            foreach($catchallRoutes as $value){
+                foreach($value as $rname2=>$value2){
+                    if($value2[0]==$controller && $value2[1]==$method){                   
+                        $routename = $rname2;
+                        $catchall = true;
+                        break;
+                    }
+                }
+                if(!empty($routename)) break;
+            }   
         }
+                
         if($addAppUrl)
             $routename = Doo::conf()->APP_URL . substr($routename,1);
 
-        if($param!=null){
+        if(isset($catchall)){
+            if($param!=null){
+                $totalDefinedKey = substr_count($routename, ':');
+                
+                if($totalDefinedKey > 0){
+                    $i = 0;
+                    foreach($param as $k=>$v){
+                        $routename = str_replace(':' . $k, $v, $routename);   
+                        unset($param[$k]);
+                        $i++;
+                        if($i === $totalDefinedKey) break;
+                    }
+                }
+
+                if(!empty($param)){
+                    $routename .= '/'. implode('/', $param);
+                }
+            }
+        }
+        else if($param!=null){
             foreach($param as $k=>$v){
                 $routename = str_replace(':' . $k, $v, $routename);
-            }
+            }                
         }
 
         return $routename;
