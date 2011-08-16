@@ -160,6 +160,8 @@ class DooSqlMagic {
                 $this->pdo->exec("SET NAMES '". $this->dbconfig['charset']. "'");
             }
         }catch(PDOException $e){
+            if(Doo::conf()->APP_MODE=='dev')
+                throw $e;
             throw new SqlMagicException('Failed to open the DB connection', SqlMagicException::DBConnectionError);
         }
     }
@@ -191,6 +193,8 @@ class DooSqlMagic {
                 $this->pdo->exec("SET NAMES '". $dbconfig['charset']. "'");
             }
         }catch(PDOException $e){
+            if(Doo::conf()->APP_MODE=='dev')
+                throw $e;        
             throw new SqlMagicException('Failed to open the DB connection', SqlMagicException::DBConnectionError);
         }
     }
