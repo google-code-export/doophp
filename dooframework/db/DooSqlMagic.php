@@ -147,6 +147,8 @@ class DooSqlMagic {
         try{
             if ($this->dbconfig[4]=='sqlite')
                 $this->pdo = new PDO("{$this->dbconfig[4]}:{$this->dbconfig[0]}");
+            else if ($this->dbconfig[4]=='oci')
+                $this->pdo = new PDO("oci:dbname=//{$this->dbconfig[0]}/{$this->dbconfig[1]}", $this->dbconfig[2], $this->dbconfig[3],array(PDO::ATTR_PERSISTENT => $this->dbconfig[5]));                
             else
                 $this->pdo = new PDO("{$this->dbconfig[4]}:host={$this->dbconfig[0]};dbname={$this->dbconfig[1]}", $this->dbconfig[2], $this->dbconfig[3],array(PDO::ATTR_PERSISTENT => $this->dbconfig[5]));
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -176,6 +178,8 @@ class DooSqlMagic {
         try{
             if ($dbconfig[4]=='sqlite')
                 $this->pdo = new PDO("{$dbconfig[4]}:{$dbconfig[0]}");
+            else if ($this->dbconfig[4]=='oci')
+                $this->pdo = new PDO("oci:dbname=//{$this->dbconfig[0]}/{$this->dbconfig[1]}", $this->dbconfig[2], $this->dbconfig[3],array(PDO::ATTR_PERSISTENT => $this->dbconfig[5]));                
             else
                 $this->pdo = new PDO("{$dbconfig[4]}:host={$dbconfig[0]};dbname={$dbconfig[1]}", $dbconfig[2], $dbconfig[3],array(PDO::ATTR_PERSISTENT => $dbconfig[5]));
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
