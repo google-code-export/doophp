@@ -448,6 +448,14 @@ class DooSqlMagic {
         return $this->pdo;
     }
 
+    /**
+     * Inject the underlying PDO object used in DooSqlMagic
+     * @param PDO $pdo PDO object
+     */
+    public function setDbObject($pdo){
+        $this->pdo = $pdo;
+    }
+
     //---------------------------------- SQL generator functions ------------------------
 
 	/**
