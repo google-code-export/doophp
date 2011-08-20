@@ -1983,6 +1983,10 @@ class DooSqlMagic {
 
         $sql ="INSERT INTO {$obj['_table']} ($fieldstr) VALUES ($valuestr)";
         $this->query($sql, $values);
+        
+        if ($this->dbconfig[4] == 'pgsql') {
+            return $this->pdo->lastInsertId($model->_primarykey);            
+        }
         return $this->pdo->lastInsertId();
     }
 
@@ -2036,6 +2040,9 @@ class DooSqlMagic {
 
         $sql ="INSERT INTO {$model->_table} ($fieldstr) VALUES ($valuestr)";
         $this->query($sql, $values);
+        if ($this->dbconfig[4] == 'pgsql') {
+            return $this->pdo->lastInsertId($model->_primarykey);            
+        }        
         return $this->pdo->lastInsertId();
     }
 
