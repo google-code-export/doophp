@@ -325,6 +325,20 @@ class DooSmartModel{
         return $this->dbObject;
     }
     
+    public function getDataObject(){
+        $obj = new stdClass();
+        foreach($this->_fields as $field)
+            $obj->{$field} = $this->{$field};
+        return $obj;
+    }
+
+    public function getDataArray(){
+        $obj = array();
+        foreach($this->_fields as $field)
+            $obj[$field] = $this->{$field};
+        return $obj;
+    }
+    
     /**
      * Set DB object to be used instead of the default DooSqlMagic instance from Doo::db()
      * @param DooSqlMagic $dbOject DB object
