@@ -250,6 +250,7 @@ class DooWebApp{
                 if(isset(Doo::conf()->PROTECTED_FOLDER_ORI)===true)
                     Doo::conf()->PROTECTED_FOLDER = Doo::conf()->PROTECTED_FOLDER_ORI;
                 $this->throwHeader(404);
+                return;
             }
 
             if($params!=null)
@@ -269,6 +270,7 @@ class DooWebApp{
         }
         else{
             $this->throwHeader(404);
+            return;
         }
     }
 
