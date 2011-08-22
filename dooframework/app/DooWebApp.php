@@ -167,9 +167,8 @@ class DooWebApp{
             }
             
             if(in_array($method_name, array('initPutVars','load','db','acl','beforeRun','cache','saveRendered','saveRenderedC','view','render','renderc','language','acceptType','setContentType','clientIP','afterRun','getKeyParam','getKeyParams','viewRenderAutomation','isAjax','isSSL','toXML','toJSON'))){ 
-                #require_once Doo::conf()->BASE_PATH ."controller/DooController.php";
-                #echo implode("()\n * ", get_class_methods('DooController') );
-                return 404;
+                $this->throwHeader(404);
+                return;
             }
 
             if(isset($moduleName)===true){
