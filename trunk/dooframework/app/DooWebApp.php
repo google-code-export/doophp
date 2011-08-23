@@ -172,7 +172,7 @@ class DooWebApp{
                 }
             }
             
-            if(in_array($method_name, array('initPutVars','load','db','acl','beforeRun','cache','saveRendered','saveRenderedC','view','render','renderc','language','acceptType','setContentType','clientIP','afterRun','getKeyParam','getKeyParams','viewRenderAutomation','isAjax','isSSL','toXML','toJSON'))){ 
+            if(in_array($method_name, array('setHeader','setRawHeader','initPutVars','load','db','acl','beforeRun','cache','saveRendered','saveRenderedC','view','render','renderc','language','acceptType','setContentType','clientIP','afterRun','getKeyParam','getKeyParams','viewRenderAutomation','isAjax','isSSL','toXML','toJSON'))){ 
                 $this->throwHeader(404);
                 return;
             }
@@ -534,7 +534,7 @@ class DooWebApp{
      * @param string $content Header content
      */
     public function setHeader($name, $content){
-        $this->setRawHeader($name .': '. $content);
+        header($name .': '. $content);
     }
 
     /**
@@ -544,7 +544,7 @@ class DooWebApp{
      * @param int $code HTTP status code
      */    
     public function setRawHeader($rawHeader, $replace=true, $code=null){
-        $this->setRawHeader($rawHeader, $replace, $code);        
+        header($rawHeader, $replace, $code);        
     }
     
     /**
