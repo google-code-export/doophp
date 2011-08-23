@@ -100,7 +100,20 @@ class Doo{
         }
         return self::$_app;
     }
-
+    
+    /**
+     * Set application type to be created.
+     * @param string|object $type 'DooWebApp' or pass in any instance of your custom app class
+     */
+    public static function setAppType($type){
+        if(is_string($type)){
+            self::loadCore('app/'.$type);        
+            self::$_app = new $type;            
+        }else{
+            self::$_app = $type;                        
+        }
+    }
+    
     /**
      * @return DooCliApp the CLI application instance.
      */
