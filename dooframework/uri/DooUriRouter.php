@@ -168,9 +168,9 @@ class DooUriRouter{
 
         if($route[0]==='redirect'){
             if(sizeof($route)===2)
-                self::redirect($route[1]);
+                return array('redirect' => array($route[1], 302));
             else
-                self::redirect($route[1],true,$route[2]);
+                return array('redirect' => array($route[1], $route[2]));
         }
 
         if(isset($route['auth'])===true){
@@ -203,13 +203,13 @@ class DooUriRouter{
     public static function redirect($location, $exit=true, $code=302, $headerBefore=NULL, $headerAfter=NULL){
         if($headerBefore!==null){
 			foreach($headerBefore as $h){
-                header($h);
+                Doo::app()->setRawHeader($h);
 			}
         }
-        header("Location: $location", true, $code);
+        Doo::app()->setRawHeader("Location: $location", true, $code);
         if($headerAfter!==null){
 			foreach($headerAfter as $h){
-                header($h);
+                Doo::app()->setRawHeader($h);
 			}
         }
         if($exit)

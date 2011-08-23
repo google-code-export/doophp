@@ -83,6 +83,12 @@ class DooWebApp{
         Doo::loadCore('uri/DooUriRouter');
         $router = new DooUriRouter;
         $routeRs = $router->execute($this->route,Doo::conf()->SUBFOLDER);
+        
+        if(isset($routeRs['redirect'])===true){
+            list($redirUrl, $redirCode) = $routeRs['redirect'];
+            DooUriRouter::redirect($redirUrl, true, $redirCode);
+            return;
+        }
 
         if($routeRs[0]!==null && $routeRs[1]!==null){
             //dispatch, call Controller class
@@ -291,7 +297,7 @@ class DooWebApp{
         }
 
         if($is404===true)
-            header('HTTP/1.1 404 Not Found');
+            $this->setRawHeader('HTTP/1.1 404 Not Found');
         //$this->routeTo();
         $this->throwHeader( $this->routeTo() );
     }
@@ -475,7 +481,7 @@ class DooWebApp{
             if(is_int($code)){
                 if($code===404){
                     //Controller return 404, send 404 header, include file if ERROR_404_DOCUMENT is set by user
-                    header('HTTP/1.1 404 Not Found');
+                    $this->setRawHeader('HTTP/1.1 404 Not Found');
                     if(!empty(Doo::conf()->ERROR_404_DOCUMENT)){
                         include Doo::conf()->SITE_PATH . Doo::conf()->ERROR_404_DOCUMENT;
                     }
@@ -505,18 +511,42 @@ class DooWebApp{
                     $this->reroute($code[0],true);
                     exit;
                 }
-                // if array('http://location.to.redirect', 302), Moved Temporarily is sent before Location:
+                // if array('http://location.to.redirect', 302), 302 Found is sent before Location:
                 elseif($code[1]===302){
-                    DooUriRouter::redirect($code[0],true, $code[1], array("HTTP/1.1 302 Moved Temporarily"));
+                    DooUriRouter::redirect($code[0],true, $code[1], array("HTTP/1.1 302 Found"));
                 }
-                //else redirect with the http status defined,eg. 307
-                else{
+                //else redirect with the http status defined,eg. 307 Moved Temporarily
+                else if($code[1] > 299 && $code[1] < 400){
                     DooUriRouter::redirect($code[0],true, $code[1]);
+                }
+                else{
+                    if(!empty($code[1]))
+                        $this->setRawHeader('', true, $code[1]);
+                    return $this->reroute($code[0]);                    
                 }
             }
         }
     }
+    
+    /**
+     * Set header. eg. setHeader('Content-Type', 'application/json')
+     * @param string $name Header name
+     * @param string $content Header content
+     */
+    public function setHeader($name, $content){
+        $this->setRawHeader($name .': '. $content);
+    }
 
+    /**
+     * Set raw header. eg. 'HTTP/1.1 200 OK'
+     * @param string $rawHeader Header content
+     * @param bool $replace Whether to replace the same header that is previously set
+     * @param int $code HTTP status code
+     */    
+    public function setRawHeader($rawHeader, $replace=true, $code=null){
+        $this->setRawHeader($rawHeader, $replace, $code);        
+    }
+    
     /**
      * To debug variables with DooPHP's diagnostic view
      * @param mixed $var The variable to view in diagnostics.

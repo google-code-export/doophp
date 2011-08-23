@@ -43,10 +43,10 @@ class DooSiteMagic{
      */
     public static function showDebug($filename){
         $path = isset(Doo::conf()->LOG_PATH) ? Doo::conf()->LOG_PATH : Doo::conf()->SITE_PATH;
-        header('Content-Type: text/xml');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
+        Doo::app()->setRawHeader('Content-Type: text/xml');
+        Doo::app()->setRawHeader('Expires: 0');
+        Doo::app()->setRawHeader('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        Doo::app()->setRawHeader('Pragma: public');
         echo '<xml>';
         if(isset($filename))
             include $path . $filename .'.xml';

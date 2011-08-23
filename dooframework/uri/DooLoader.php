@@ -78,9 +78,7 @@ class DooLoader {
      * @param bool $isLarge If True, the large file will be read chunk by chunk into the memory.
      * @param string $rename Name to replace the file name that would be downloaded
      */
-    public function download($file, $isLarge=FALSE, $rename=NULL){
-        if(headers_sent())return false;
-        
+    public function download($file, $isLarge=FALSE, $rename=NULL){        
         if($rename==NULL){
             if(strpos($file, '/')===FALSE && strpos($file, '\\')===FALSE)
                 $filename = $file;
@@ -91,13 +89,13 @@ class DooLoader {
             $filename = $rename;
         }
 
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header("Content-Disposition: attachment; filename=\"$filename\"");
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($file));
+        Doo::app()->setRawHeader('Content-Description: File Transfer');
+        Doo::app()->setRawHeader('Content-Type: application/octet-stream');
+        Doo::app()->setRawHeader("Content-Disposition: attachment; filename=\"$filename\"");
+        Doo::app()->setRawHeader('Expires: 0');
+        Doo::app()->setRawHeader('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        Doo::app()->setRawHeader('Pragma: public');
+        Doo::app()->setRawHeader('Content-Length: ' . filesize($file));
         ob_clean();
         flush();
 
