@@ -47,9 +47,9 @@ class DooDigestAuth{
         }
 
         if (empty($_SERVER['PHP_AUTH_DIGEST'])) {
-            header('WWW-Authenticate: Digest realm="'.$realm.
+            Doo::app()->setRawHeader('WWW-Authenticate: Digest realm="'.$realm.
                    '",qop="auth",nonce="'.uniqid().'",opaque="'.md5($realm).'"');
-            header('HTTP/1.1 401 Unauthorized');
+            Doo::app()->setRawHeader('HTTP/1.1 401 Unauthorized');
             if($failMsg!=NULL)
                 die($failMsg);
             if($failURL!=NULL)
@@ -59,9 +59,9 @@ class DooDigestAuth{
 
         // analyze the PHP_AUTH_DIGEST variable
         if (!($data = self::httpDigestParse($_SERVER['PHP_AUTH_DIGEST'])) || !isset($users[$data['username']])){
-            header('WWW-Authenticate: Digest realm="'.$realm.
+            Doo::app()->setRawHeader('WWW-Authenticate: Digest realm="'.$realm.
                    '",qop="auth",nonce="'.uniqid().'",opaque="'.md5($realm).'"');
-            header('HTTP/1.1 401 Unauthorized');
+            Doo::app()->setRawHeader('HTTP/1.1 401 Unauthorized');
             if($failMsg!=NULL)
                 die($failMsg);
             if($failURL!=NULL)
@@ -79,8 +79,8 @@ class DooDigestAuth{
         $valid_response = md5($A1.':'.$data['nonce'].':'.$data['nc'].':'.$data['cnonce'].':'.$data['qop'].':'.$A2);
 
         if ($data['response'] != $valid_response){
-            header('HTTP/1.1 401 Unauthorized');
-            header('WWW-Authenticate: Digest realm="'.$realm.
+            Doo::app()->setRawHeader('HTTP/1.1 401 Unauthorized');
+            Doo::app()->setRawHeader('WWW-Authenticate: Digest realm="'.$realm.
                    '",qop="auth",nonce="'.uniqid().'",opaque="'.md5($realm).'"');
             if($failMsg!=NULL)
                 die($failMsg);
@@ -162,9 +162,9 @@ class DooDigestAuth{
         }
 
         if (empty($_SERVER['PHP_AUTH_DIGEST'])) {
-            header('WWW-Authenticate: Digest realm="'.$realm.
+            Doo::app()->setRawHeader('WWW-Authenticate: Digest realm="'.$realm.
                    '",qop="auth",nonce="'.uniqid().'",opaque="'.md5($realm).'"');
-            header('HTTP/1.1 401 Unauthorized');
+            Doo::app()->setRawHeader('HTTP/1.1 401 Unauthorized');
             if($failMsg!=NULL)
                 die($failMsg);
             if($failURL!=NULL)
@@ -183,9 +183,9 @@ class DooDigestAuth{
         
         // analyze the PHP_AUTH_DIGEST variable
         if (!$data || !isset($hashedPassword)){
-            header('WWW-Authenticate: Digest realm="'.$realm.
+            Doo::app()->setRawHeader('WWW-Authenticate: Digest realm="'.$realm.
                    '",qop="auth",nonce="'.uniqid().'",opaque="'.md5($realm).'"');
-            header('HTTP/1.1 401 Unauthorized');
+            Doo::app()->setRawHeader('HTTP/1.1 401 Unauthorized');
             if($failMsg!=NULL)
                 die($failMsg);
             if($failURL!=NULL)
@@ -203,8 +203,8 @@ class DooDigestAuth{
         $valid_response = md5($A1.':'.$data['nonce'].':'.$data['nc'].':'.$data['cnonce'].':'.$data['qop'].':'.$A2);
 
         if ($data['response'] != $valid_response){
-            header('HTTP/1.1 401 Unauthorized');
-            header('WWW-Authenticate: Digest realm="'.$realm.
+            Doo::app()->setRawHeader('HTTP/1.1 401 Unauthorized');
+            Doo::app()->setRawHeader('WWW-Authenticate: Digest realm="'.$realm.
                    '",qop="auth",nonce="'.uniqid().'",opaque="'.md5($realm).'"');
             if($failMsg!=NULL)
                 die($failMsg);

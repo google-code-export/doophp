@@ -28,8 +28,8 @@ getImg();
 
 function getImg(){
     if(isset($_GET['doodiagnostic_pic']) && file_exists(Doo::conf()->BASE_PATH . 'diagnostic/assets/'.$_GET['doodiagnostic_pic'])){
-        header('Content-Type: image/png');
-        header('Content-Length: '.filesize(Doo::conf()->BASE_PATH . 'diagnostic/assets/'.$_GET['doodiagnostic_pic']));
+        Doo::app()->setRawHeader('Content-Type: image/png');
+        Doo::app()->setRawHeader('Content-Length: '.filesize(Doo::conf()->BASE_PATH . 'diagnostic/assets/'.$_GET['doodiagnostic_pic']));
         ob_clean();
         readfile(Doo::conf()->BASE_PATH . 'diagnostic/assets/'.$_GET['doodiagnostic_pic']);
         exit;
@@ -132,7 +132,7 @@ function setErrorHandler($errno, $errstr, $errfile, $errline, $errcontext=null){
 		$lines[0] = str_replace('<code>','',$lines[0]);
 		$lines[sizeof($lines)-1] = str_replace('</code>','',$lines[sizeof($lines)-1]);
 	}
-	
+    
     $imgloader = Doo::conf()->SUBFOLDER . 'index.php?doodiagnostic_pic=';
 
 	if (ob_get_level() !== 0) {
@@ -310,7 +310,7 @@ function setErrorHandler($errno, $errstr, $errfile, $errline, $errcontext=null){
     echo '</pre><br/>';
 	
     echo "</div><div class=\"back\"><a href=\"#top\">BACK TO TOP </a></div></body></html>";
-    exit;
+//    exit;
 }
 
 function traceVar($var){

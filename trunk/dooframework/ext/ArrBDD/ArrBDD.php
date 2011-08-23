@@ -259,9 +259,9 @@ class ArrBDD{
     }
 
     public function outputJSON( $result ){
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Expires: Mon, 26 Jul 1970 05:00:00 GMT');
-        header('Content-type: application/json');
+        Doo::app()->setRawHeader('Cache-Control: no-cache, must-revalidate');
+        Doo::app()->setRawHeader('Expires: Mon, 26 Jul 1970 05:00:00 GMT');
+        Doo::app()->setRawHeader('Content-type: application/json');
         echo json_encode( $result );
     }
 }

@@ -52,6 +52,8 @@
  * isSSL()
  * toXML()
  * toJSON()
+ * setHeader()
+ * setRawHeader()
  * </code>
  *
  * You still have a lot of freedom to name your methods and properties other than names mentioned.
@@ -155,6 +157,25 @@ class DooController {
      */
     public function cache($cacheType='file'){
         return Doo::cache($cacheType);
+    }
+    
+    /**
+     * Set header. eg. setHeader('Content-Type', 'application/json')
+     * @param string $name Header name
+     * @param string $content Header content
+     */
+    public function setHeader($name, $content){
+        Doo::app()->setHeader($name, $content);
+    }    
+    
+    /**
+     * Set raw header. eg. 'HTTP/1.1 200 OK'
+     * @param string $rawHeader Header content
+     * @param bool $replace Whether to replace the same header that is previously set
+     * @param int $code HTTP status code
+     */    
+    public function setRawHeader($rawHeader, $replace=true, $code=null){
+        Doo::app()->setRawHeader($rawHeader, $replace, $code);
     }
 
     /**
@@ -339,7 +360,7 @@ class DooController {
 							'tsv'=>'text/tsv'
 						);
         if(isset($extensions[$type]))
-            header("Content-Type: {$extensions[$type]}; charset=$charset");
+            $this->setRawHeader("Content-Type: {$extensions[$type]}; charset=$charset");
     }
 
     /**
