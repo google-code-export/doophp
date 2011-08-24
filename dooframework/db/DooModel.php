@@ -95,9 +95,7 @@ class DooModel{
                     $this->{$k} = $v;
             }
         }
-        if($dbOject===null){
-            $this->dbObject = Doo::db();
-        }else{
+        if($dbOject!==null){
             $this->dbObject = $dbOject;        
         }
     }
@@ -152,6 +150,8 @@ class DooModel{
      * @return DooSqlMagic
      */
     public function db(){
+        if($this->dbObject===null)
+            return Doo::db();        
         return $this->dbObject;
     }
 
