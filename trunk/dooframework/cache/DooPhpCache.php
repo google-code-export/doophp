@@ -193,7 +193,7 @@ class DooPhpCache {
         else
             $cfile = $this->_directory.$folder.'/'.$id.'.php';
         if(file_exists($cfile)){
-            unlink( $file );
+            unlink( $cfile );
         }
     }
 
