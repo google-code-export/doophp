@@ -500,8 +500,8 @@ class Doo{
 		$class['DooUriRouter'] = 'uri/DooUriRouter';
         
         //view
-		$class['DooView'] = 'uri/DooView';
-		$class['DooViewBasic'] = 'uri/DooViewBasic';
+		$class['DooView'] = 'view/DooView';
+		$class['DooViewBasic'] = 'view/DooViewBasic';
         
         if(isset($class[$classname]))
             self::loadCore($class[$classname]);
