@@ -576,6 +576,10 @@ class Doo{
             return Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER;                            
         }        
     }
+    
+    public static function getCurrentModulePath(){
+        return Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER;
+    }
 
     /**
      * Simple benchmarking. To used this, set <code>$config['START_TIME'] = microtime(true);</code> in <i>common.conf.php</i> .
