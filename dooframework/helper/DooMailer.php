@@ -95,9 +95,19 @@ class DooMailer {
 	 * @param string $charset Charset for mail, default (utf-8)
 	 * @param string $headerEOL The string to use for end of line in the mail headers (Note: Use double quotes when defining this)
 	 */
-	public function __construct($charset = 'utf-8', $headerEOL = "\r\n") {
-		$this->_charset = $charset;
-		$this->_headerEOL = $headerEOL;
+	public function __construct($charset = 'utf-8', $headerEOL = null) {
+		if ($headerEOL == null) {
+			$os = strtoupper(substr(PHP_OS, 0, 3));
+			if ($os == 'WIN') {
+				$this->_headerEOL = "\r\n";
+			} elseif ($os == 'MAC') {
+				$this->_headerEOL = "\r";
+			} else {
+				$this->_headerEOL = "\n";
+			}
+		} else {
+			$this->_headerEOL = $headerEOL;
+		}
 	}
 
 	/**
