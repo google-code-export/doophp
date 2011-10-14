@@ -819,7 +819,7 @@ class DooValidator {
      */
     public function testFloat($value, $decimal='', $msg=null){
         // any amount of decimal
-        if (!preg_match('/^[0-9]*\\.?[0-9]{0,'.$decimal.'}$/', $value)){
+        if (!preg_match('/^[-]?[0-9]*\\.?[0-9]{0,'.$decimal.'}$/', $value)){
             if($msg!==null) return $msg;
             return 'Input is not a valid float value.';
         }
