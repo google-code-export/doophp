@@ -220,7 +220,7 @@ class DooRestClient {
             return $this->curl_opt['HTTPHEADER'];
 
         foreach($headerArr as $k=>$v){
-            $this->curl_opt['HTTPHEADER'] = array("$k: $v");
+            $this->curl_opt['HTTPHEADER'][] = $k . ': ' . $v;
         }
                 
         return $this;
@@ -276,7 +276,7 @@ class DooRestClient {
             else
                 return;
 
-        $this->curl_opt['HTTPHEADER'] = array("Accept: $type");
+        $this->curl_opt['HTTPHEADER'][] = "Accept: $type";
         return $this;
     }
 
@@ -303,7 +303,7 @@ class DooRestClient {
             else
                 return;
 
-        $this->curl_opt['HTTPHEADER'] = array("Content-Type: $type");
+        $this->curl_opt['HTTPHEADER'][] = "Content-Type: $type";
         return $this;
     }
 
