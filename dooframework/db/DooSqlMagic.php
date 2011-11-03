@@ -203,6 +203,17 @@ class DooSqlMagic {
 		$this->attemptAutoReconnect = $status;
 	}
 
+	/**
+	 * Attempts to update the wait_timeout variable determining how long to connection should remain open.
+	 * Useful when you want to keep connections timeouts low by default but need a long running task to keep
+	 * the connection open for an extended period of time
+	 * Note: currently only supports MySQL but can add other options if users provide appropriate sql statements
+	 * @param int $timeout The time the connection should remain open in Seconds
+	 */
+	public function setConnectionTimeout($timeout=60) {
+		$this->query("SET SESSION wait_timeout = ?", $timeout);
+	}
+	
     /**
      * Close a database connection
      */
