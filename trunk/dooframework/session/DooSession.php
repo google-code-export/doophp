@@ -101,7 +101,7 @@ class DooSession {
 	*/
 	public static function isStarted()
 	{
-		if (isset($_SESSION)) {
+		if (!empty($_SESSION[$this->_namespace]) && $this->_sessionStarted) {
 			return true;
 		} else {
 			return false;
