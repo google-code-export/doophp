@@ -99,7 +99,7 @@ class DooSession {
 	*
 	* @return boolean
 	*/
-	public static function isStarted()
+	public function isStarted()
 	{
 		if (!empty($_SESSION[$this->_namespace]) && $this->_sessionStarted) {
 			return true;
