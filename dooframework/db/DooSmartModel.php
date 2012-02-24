@@ -206,7 +206,7 @@ class DooSmartModel{
             }
         }
         else{
-            if($rs = Doo::cache(self::$cacheMode)->get(Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_PATH . $id)){
+            if($rs = Doo::cache(self::$cacheMode)->get(Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . $id)){
                 if($rs instanceof ArrayObject)
                     return $rs->getArrayCopy();
                 return $rs;
@@ -229,18 +229,18 @@ class DooSmartModel{
         }
         else{
             //need to store the list of Model cache to be purged later on for Memory based cache.
-            $keysId = Doo::conf(self::$cacheMode)->SITE_PATH . Doo::conf()->PROTECTED_PATH . 'mdl_'.self::$className;
+            $keysId = Doo::conf(self::$cacheMode)->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . 'mdl_'.self::$className;
             if($keys = Doo::cache(self::$cacheMode)->get($keysId)){
                 $listOfModelCache = $keys->getArrayCopy();
-                $listOfModelCache[] = Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_PATH . $id;
+                $listOfModelCache[] = Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . $id;
             }else{
                 $listOfModelCache = array();
-                $listOfModelCache[] = Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_PATH . $id;
+                $listOfModelCache[] = Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . $id;
             }
             if(is_array($value))
-                Doo::cache(self::$cacheMode)->set(Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_PATH . $id, new ArrayObject($value));
+                Doo::cache(self::$cacheMode)->set(Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . $id, new ArrayObject($value));
             else
-                Doo::cache(self::$cacheMode)->set(Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_PATH . $id, $value);
+                Doo::cache(self::$cacheMode)->set(Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . $id, $value);
             Doo::cache(self::$cacheMode)->set($keysId, new ArrayObject($listOfModelCache));
         }
     }
@@ -267,7 +267,7 @@ class DooSmartModel{
         }
         else{
             //loop and get the list and delete those start with the Model name, then delete them
-            $keysId = Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_PATH . 'mdl_'.self::$className;
+            $keysId = Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . 'mdl_'.self::$className;
             if($keys = Doo::cache(self::$cacheMode)->get($keysId)){
                 $listOfModelCache = $keys->getArrayCopy();
                 foreach($listOfModelCache as $k){
@@ -284,7 +284,7 @@ class DooSmartModel{
             }else{
                 foreach($rmodels as $r){
                     //loop and get the list and delete those start with the Model name, then delete them
-                    $keysId = Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_PATH . 'mdl_'.get_class($r);
+                    $keysId = Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . 'mdl_'.get_class($r);
                     if($keys = Doo::cache(self::$cacheMode)->get($keysId)){
                         $listOfModelCache = $keys->getArrayCopy();
                         foreach($listOfModelCache as $k){
