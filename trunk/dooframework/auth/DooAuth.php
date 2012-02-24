@@ -185,24 +185,26 @@ class DooAuth {
         $authData = $this->appSession->AuthData;
         $securityLevel = $authData['_securityLevel'];
         
+        $this->isValid = false;
+        
         if ( isset($this->appSession) && $authData!==null ) {
-            if ( ($securityLevel==self::LEVEL_LOW && (isset($authData['_username']) 
-                    || ((time() - $authData['_time']) <= $this->getSessionExpire()))) || //LEVEL_LOW
+            if ( ($securityLevel==self::LEVEL_LOW && isset($authData['_username'])) || //LEVEL_LOW
                     
                     (($securityLevel==self::LEVEL_MEDIUM || $securityLevel==self::LEVEL_HIGH) //LEVEL_MEDIUM
                          && $authData['_fingerprint'] == md5($_SERVER['HTTP_USER_AGENT'].$this->getSalt())) ||
                                  
                     ($securityLevel==self::LEVEL_HIGH && $this->_id==md5($this->appSession->getId())) ) { //LEVEL_HIGH
                 
-                $this->isValid = true;
-                $this->appSession->AuthData['_time'] = time();
-                $this->username = $authData['_username'];
-				if(isset($authData['_userID']))
-					$this->userID = $authData['_userID'];
-                $this->group = $authData['_group'];
+                if( (time() - $authData['_time']) <= $this->getSessionExpire()){
+                    $this->isValid = true;
+                    $this->appSession->AuthData['_time'] = time();
+                    $this->username = $authData['_username'];
+                    if(isset($authData['_userID']))
+                            $this->userID = $authData['_userID'];
+                    $this->group = $authData['_group'];
+                }
             }
-        } else
-            $this->isValid = false;
+        }
     }
 
     /**
