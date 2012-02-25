@@ -188,7 +188,16 @@ class DooWebApp{
                 require_once Doo::conf()->BASE_PATH ."controller/DooController.php";
                 require_once $controller_file;
 
-				$methodsArray = get_class_methods($controller_name);
+                $methodsArray = get_class_methods($controller_name);
+                
+                //if controller name matches 2 classes with the same name, namespace and W/O namespace
+                if($methodsArray!==null){
+                    $unfoundInMethods = (in_array($method_name, $methodsArray)===false && 
+                                         in_array($method_name .'_'. strtolower($_SERVER['REQUEST_METHOD']), $methodsArray)===false );
+                    if($unfoundInMethods){
+                        $methodsArray = null;
+                    }
+                }
 
                 //if the method not in controller class, check for a namespaced class with the same file name.
                 if($methodsArray===null && isset(Doo::conf()->APP_NAMESPACE_ID)===true){
@@ -197,16 +206,16 @@ class DooWebApp{
                     }else{
                         $controller_name = Doo::conf()->APP_NAMESPACE_ID . '\\controller\\' . $controller_name;
                     }
-    				$methodsArray = get_class_methods($controller_name);   
+                    $methodsArray = get_class_methods($controller_name);   
                 }
                 
                 //if method not found in both both controller and namespaced controller, 404 error
                 if($methodsArray===null){
                     if(isset(Doo::conf()->PROTECTED_FOLDER_ORI)===true)
                         Doo::conf()->PROTECTED_FOLDER = Doo::conf()->PROTECTED_FOLDER_ORI;
-					$this->throwHeader(404);
-					return;                    
-                }
+                        $this->throwHeader(404);
+                        return;                    
+                }                
             }
             else if(isset($moduleName)===true && isset(Doo::conf()->APP_NAMESPACE_ID)===true){
                 if(isset(Doo::conf()->PROTECTED_FOLDER_ORI)===true)
@@ -215,14 +224,14 @@ class DooWebApp{
                 $controller_file = Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . '/controller/'.$moduleName.'/'.$controller_name .'.php';                 
                 
                 if(file_exists($controller_file)===false){
-					$this->throwHeader(404);
-					return;                    
+                    $this->throwHeader(404);
+                    return;                    
                 }                
                 $controller_name = Doo::conf()->APP_NAMESPACE_ID .'\\controller\\'.$moduleName.'\\'.$controller_name;                
                 #echo 'module = '.$moduleName.'<br>';
                 #echo $controller_file.'<br>';                
                 #echo $controller_name.'<br>';                   
-				$methodsArray = get_class_methods($controller_name);                
+                $methodsArray = get_class_methods($controller_name);                
             }            
             else{
                 if(isset(Doo::conf()->PROTECTED_FOLDER_ORI)===true)
@@ -247,7 +256,7 @@ class DooWebApp{
             if( $inRestMethod===true ){
                 $method_name = $restMethod;
             }
-
+            
             $controller = new $controller_name;
 
             //if autoroute in this controller is disabled, 404 error
