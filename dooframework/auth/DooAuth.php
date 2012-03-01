@@ -200,7 +200,7 @@ class DooAuth {
                     $this->appSession->AuthData['_time'] = time();
                     $this->username = $authData['_username'];
                     if(isset($authData['_userID']))
-                            $this->userID = $authData['_userID'];
+                        $this->userID = $authData['_userID'];
                     $this->group = $authData['_group'];
                 }
             }
@@ -211,10 +211,15 @@ class DooAuth {
      * Get token for security purpose (secure forms, etc)
      * @see http://www.serversidemagazine.com/php/php-security-measures-against-csrf-attacks
      * @see http://www.serversidemagazine.com/php/session-hijacking
+     * @param bool $storeInSession Whether to store security token in session. Default is true.
      * @return mixed
      */
-    public function securityToken() {
+    public function securityToken($storeInSession=true) {
+        if(!$storeInSession){
+            return uniqid(rand(), true);
+        }
         if ($this->isValid()) {
+            $this->appSession->AuthData['_formTokenTime'] = time();
             return $this->appSession->AuthData['_formToken'] = uniqid(rand(), true);
         }
         return false;
@@ -223,21 +228,34 @@ class DooAuth {
     /**
      * Validate form with security token
      * @see http://www.serversidemagazine.com/php/php-security-measures-against-csrf-attacks
+     * @param string $receivedToken Token received from form post by the client.
+     * @param string $tokenStored Token stored. Default using the token generated in session by calling securityToken()
+     * @param string $formTokenTime Token creation time. Default using time stored in session.
      * @return mixed
      */
-    public function validateForm($receivedToken) {
-        if ($this->isValid && isset($receivedToken)) {
-            if ($this->appSession->AuthData['_formToken']!=$receivedToken)
-                return false;
-            $time = time() - $this->appSession->AuthData['_time'];
-            
-            if ($time < $this->getFormPostMinTime())
-                return self::FORM_DISCARDED;
-            elseif ($time > $this->getFormSessionExpire())
-                return self::FORM_TIMEOUT;
-            return true;
+    public function validateForm($receivedToken, $tokenStored=null, $formTokenTime=null) {        
+        if(!isset($receivedToken)) return false;
+        
+        if($this->isValid){
+            if(empty($tokenStored) || empty($formTokenTime)){            
+                $tokenStored = $this->appSession->AuthData['_formToken'];
+                $formTokenTime = $this->appSession->AuthData['_formTokenTime'];
+            }
         }
-        return false;
+        else if(empty($tokenStored) || empty($formTokenTime)){
+            return false;
+        }
+            
+        if ($tokenStored != $receivedToken) return false;
+        
+        $time = time() - $formTokenTime;
+
+        if ($time < $this->getFormPostMinTime())
+            return self::FORM_DISCARDED;
+        else if ($time > $this->getFormSessionExpire())
+            return self::FORM_TIMEOUT;
+        
+        return true;
     }
 
     /////////// SETTERs & GETTERs ////////////
@@ -347,7 +365,7 @@ class DooAuth {
      * @return integer
      */
     public function getFormSessionExpire() {        
-        if(empty($this->authSessionExpire)){
+        if(empty($this->formSessionExpire)){
             switch ($this->securityLevel) {
                 case self::LEVEL_HIGH:
                     return 11 * 60;
