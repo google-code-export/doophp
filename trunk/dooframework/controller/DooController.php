@@ -271,6 +271,8 @@ class DooController {
      * @return string Client accept type
      */
     public function acceptType(){
+        if(empty($_SERVER["HTTP_ACCEPT"])) return NULL;
+		
         $type = array(
             '*/*'=>'*',
             'html'=>'text/html,application/xhtml+xml',
