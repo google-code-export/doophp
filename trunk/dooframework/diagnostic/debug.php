@@ -66,6 +66,15 @@ function setExceptionHandler($e){
 }
 
 function setErrorHandler($errno, $errstr, $errfile, $errline, $errcontext=null){
+  if (error_reporting() === 0
+      && $errno !== E_ERROR 
+      && $errno !== E_CORE_ERROR
+      && $errno !== E_COMPILE_ERROR
+      && $errno !== E_USER_ERROR
+      && $errno !== E_RECOVERABLE_ERROR
+  ) {
+    return;
+  }
     Doo::loadHelper('DooTextHelper');
 	
 	//require
