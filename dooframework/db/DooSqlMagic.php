@@ -305,8 +305,10 @@ class DooSqlMagic {
 			try {
 				if($param==null)
 					$stmt->execute();
-				else
-					$stmt->execute($param);
+				else {
+          $this->bindArrayValue($stmt, $param);
+					$stmt->execute();
+        }
 				return $stmt;
 			} catch (PDOException $pdoEx) {
 
@@ -321,12 +323,44 @@ class DooSqlMagic {
 			}
 		}
 
-		if($param==null)
+		if($param==null) 
 			$stmt->execute();
-		else
-			$stmt->execute($param);
+	  else {
+      $this->bindArrayValue($stmt, $param);
+			$stmt->execute();
+    }
 		
 		return $stmt;
+    }
+    
+    /*
+    * Binds parameters according to their type.
+    * @param PDOStatement $req PDOStatement object.
+    * @param array $array Values used in the prepared SQL.
+    * @param int $typeArray  PDO data type array for the parameter.
+    * @return void
+    */
+    function bindArrayValue($req, $array, $typeArray = false) {
+      if(is_object($req) && ($req instanceof PDOStatement)) {
+        foreach($array as $key => $value) {
+          if (is_int($key) === TRUE) {
+            $key += 1;
+          }
+          if($typeArray){
+            $req->bindValue($key,$value,$typeArray[$key]);
+          }
+          else {
+            if(is_int($value))
+              $param = PDO::PARAM_INT;
+            elseif(is_bool($value))
+              $param = PDO::PARAM_BOOL;
+            else
+              $param = PDO::PARAM_STR;
+            if($param)
+              $req->bindValue($key,$value,$param);
+          }
+        }
+      }
     }
 
     /*
