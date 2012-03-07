@@ -392,6 +392,18 @@ class DooSqlMagic {
         return $stmt->fetch();
     }
 
+    /*
+    * Execute a query and Fetch single column
+    * @param string $query SQL query prepared statement
+    * @param array $param Values used in the prepared SQL
+    * @return string Returns a single column.
+    */
+    public function fetchOne($query, $param=null) {
+      $stmt = $this->query($query, $param);
+      $stmt->setFetchMode(PDO::FETCH_COLUMN, 0);
+      return $stmt->fetch();
+    }
+
    /*
     * Execute a query and Fetch multiple rows
     * @param string $query SQL query prepared statement
