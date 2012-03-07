@@ -393,15 +393,27 @@ class DooSqlMagic {
     }
 
     /*
-    * Execute a query and Fetch single column
+    * Execute a query and Fetch single value
     * @param string $query SQL query prepared statement
     * @param array $param Values used in the prepared SQL
-    * @return string Returns a single column.
+    * @return string Returns a single value.
     */
     public function fetchOne($query, $param=null) {
       $stmt = $this->query($query, $param);
       $stmt->setFetchMode(PDO::FETCH_COLUMN, 0);
       return $stmt->fetch();
+    }
+
+    /*
+    * Execute a query and Fetch single column
+    * @param string $query SQL query prepared statement
+    * @param array $param Values used in the prepared SQL
+    * @return array Returns a single column.
+    */
+    public function fetchColumn($query, $param=null) {
+      $stmt = $this->query($query, $param);
+      $stmt->setFetchMode(PDO::FETCH_COLUMN, 0);
+      return $stmt->fetchAll();
     }
 
    /*
