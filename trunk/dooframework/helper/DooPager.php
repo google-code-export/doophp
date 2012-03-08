@@ -183,7 +183,7 @@ class DooPager{
      * To display/hide the next/prev button links
      * @var bool
      */
-     private $_noNextPrev=false;
+     protected $_noNextPrev=false;
 
     /**
      * Default css for testing
