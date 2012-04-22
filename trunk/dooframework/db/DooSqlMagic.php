@@ -211,7 +211,7 @@ class DooSqlMagic {
 	 * @param int $timeout The time the connection should remain open in Seconds
 	 */
 	public function setConnectionTimeout($timeout=60) {
-		$this->query("SET SESSION wait_timeout = ?", $timeout);
+		$this->query("SET SESSION wait_timeout = ?", array($timeout));
 	}
 	
     /**
