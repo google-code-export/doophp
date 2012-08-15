@@ -162,15 +162,15 @@ class DooAuth {
 			
         $this->appSession->AuthData['_time'] = time();
         $this->appSession->AuthData['_securityLevel'] = $this->getSecurityLevel();
-        
+        $agent = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : '';
         switch ($this->securityLevel) {
             case self::LEVEL_HIGH:
-                $this->appSession->AuthData['_fingerprint'] = md5($_SERVER['HTTP_USER_AGENT'].$this->getSalt());
+                $this->appSession->AuthData['_fingerprint'] = md5($agent.$this->getSalt());
                 session_regenerate_id();
                 $this->appSession->AuthData['_id'] = md5($this->appSession->getId());
                 break;
             case self::LEVEL_MEDIUM:
-                $this->appSession->AuthData['_fingerprint'] = md5($_SERVER['HTTP_USER_AGENT'].$this->getSalt());
+                $this->appSession->AuthData['_fingerprint'] = md5($agent.$this->getSalt());
                 break;
         }                    
     }
