@@ -188,10 +188,12 @@ class DooAuth {
         $this->isValid = false;
         
         if ( isset($this->appSession) && $authData!==null ) {
+            $agent = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : '';
+            
             if ( ($securityLevel==self::LEVEL_LOW && isset($authData['_username'])) || //LEVEL_LOW
                     
                     (($securityLevel==self::LEVEL_MEDIUM || $securityLevel==self::LEVEL_HIGH) //LEVEL_MEDIUM
-                         && $authData['_fingerprint'] == md5($_SERVER['HTTP_USER_AGENT'].$this->getSalt())) ||
+                         && $authData['_fingerprint'] == md5($agent.$this->getSalt())) ||
                                  
                     ($securityLevel==self::LEVEL_HIGH && $this->_id==md5($this->appSession->getId())) ) { //LEVEL_HIGH
                 
