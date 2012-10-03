@@ -15,9 +15,9 @@
  *
  * Form post can be protected from CSRF attack by using DooAuth::validateForm() which accepts a token is generated
  * using DooAuth::securityToken() and render along with the form.
- * 
+ *
  * By default, form post has a minimum time frame of 20 seconds. The minimum can be changed using DooAuth::setFormPostMinTime()
- * 
+ *
  * Form session will expire after a certain amount of time. This duration is set by default according to the security level defined.
  * By default, LEVEL_HIGH is 60*11 seconds, LEVEL_MEDIUM is 60*60 seconds, LEVEL_LOW is 90*60 seconds.
  * This form session expiry time can be changed using DooAuth::setFormSessionExpire();
@@ -33,73 +33,73 @@ class DooAuth {
      * @var integer
      */
     const LEVEL_HIGH = 1;
-    
+
     /**
      * MEDIUM security level
      * @var integer
      */
     const LEVEL_MEDIUM = 2;
-    
+
     /**
      * LOW security level
      * @var integer
      */
     const LEVEL_LOW = 3;
-    
+
     /**
      * Discarded form indicator
      * @var string
      */
     const FORM_DISCARDED = 'form_discarded';
-    
+
     /**
      * Timeout form indicator
      * @var string
      */
     const FORM_TIMEOUT = 'form_timeout';
-    
+
     /**
      * DooSession instance
      * @var DooSession
      */
     protected $appSession;
-    
+
     /**
      * Application name
      * @var string
      */
     protected $appName;
-    
+
     /**
      * A random string for hashing
      * @var string
      */
     protected $salt;
-    
+
     /**
      * Duration(in seconds) for auth session to expire
      * @var integer
      */
-    protected $authSessionExpire; 
-    
+    protected $authSessionExpire;
+
     /**
      * Security level
      * @var integer
      */
     protected $securityLevel;
-    
+
     /**
      * Duration(in seconds) for form session timeout
      * @var integer
      */
     protected $formSessionExpire;
-    
+
     /**
      * Minimum time-frame(in seconds) for form post to discard spam bots or an automated CSRF attack
      * @var integer
      */
     protected $formPostMinTime=20;
-    
+
     /**
      * Indicator for valid authetication
      * @var boolean
@@ -122,8 +122,8 @@ class DooAuth {
      * User ID from the session
      * @var string
      */
-    public $userID;	
-	
+    public $userID;
+
     /**
      * Constructor - returns an instance object of DooAuth
      */
@@ -159,20 +159,20 @@ class DooAuth {
         $this->group = $this->appSession->AuthData['_group'] = $group;
 		if($userID!==null)
 			$this->userID = $this->appSession->AuthData['_userID'] = $userID;
-			
+
         $this->appSession->AuthData['_time'] = time();
         $this->appSession->AuthData['_securityLevel'] = $this->getSecurityLevel();
         $agent = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : '';
         switch ($this->securityLevel) {
             case self::LEVEL_HIGH:
                 $this->appSession->AuthData['_fingerprint'] = md5($agent.$this->getSalt());
-                session_regenerate_id();
+                session_regenerate_id(TRUE);
                 $this->appSession->AuthData['_id'] = md5($this->appSession->getId());
                 break;
             case self::LEVEL_MEDIUM:
                 $this->appSession->AuthData['_fingerprint'] = md5($agent.$this->getSalt());
                 break;
-        }                    
+        }
     }
 
     /**
@@ -184,19 +184,19 @@ class DooAuth {
     public function validate() {
         $authData = $this->appSession->AuthData;
         $securityLevel = $authData['_securityLevel'];
-        
+
         $this->isValid = false;
-        
+
         if ( isset($this->appSession) && $authData!==null ) {
             $agent = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : '';
-            
+
             if ( ($securityLevel==self::LEVEL_LOW && isset($authData['_username'])) || //LEVEL_LOW
-                    
+
                     (($securityLevel==self::LEVEL_MEDIUM || $securityLevel==self::LEVEL_HIGH) //LEVEL_MEDIUM
                          && $authData['_fingerprint'] == md5($agent.$this->getSalt())) ||
-                                 
+
                     ($securityLevel==self::LEVEL_HIGH && $this->_id==md5($this->appSession->getId())) ) { //LEVEL_HIGH
-                
+
                 if( (time() - $authData['_time']) <= $this->getSessionExpire()){
                     $this->isValid = true;
                     $this->appSession->AuthData['_time'] = time();
@@ -235,11 +235,11 @@ class DooAuth {
      * @param string $formTokenTime Token creation time. Default using time stored in session.
      * @return mixed
      */
-    public function validateForm($receivedToken, $tokenStored=null, $formTokenTime=null) {        
+    public function validateForm($receivedToken, $tokenStored=null, $formTokenTime=null) {
         if(!isset($receivedToken)) return false;
-        
+
         if($this->isValid){
-            if(empty($tokenStored) || empty($formTokenTime)){            
+            if(empty($tokenStored) || empty($formTokenTime)){
                 $tokenStored = $this->appSession->AuthData['_formToken'];
                 $formTokenTime = $this->appSession->AuthData['_formTokenTime'];
             }
@@ -247,16 +247,16 @@ class DooAuth {
         else if(empty($tokenStored) || empty($formTokenTime)){
             return false;
         }
-            
+
         if ($tokenStored != $receivedToken) return false;
-        
+
         $time = time() - $formTokenTime;
 
         if ($time < $this->getFormPostMinTime())
             return self::FORM_DISCARDED;
         else if ($time > $this->getFormSessionExpire())
             return self::FORM_TIMEOUT;
-        
+
         return true;
     }
 
@@ -266,47 +266,47 @@ class DooAuth {
             throw new DooAuthException("Application name cannot be empty");
         $this->appName = $appName;
     }
-    
+
     public function getApplicationName() {
         if (!isset ($this->appName))
             throw new DooAuthException("Application name not defined");
         return $this->appName;
     }
-    
+
     public function setSalt($salt) {
         if (!isset ($salt))
             throw new DooAuthException("Salt cannot be empty");
         $this->salt = $salt;
     }
-    
+
     public function getSalt() {
         if (!isset ($this->salt))
             throw new DooAuthException("Salt not defined");
         return $this->salt;
     }
-    
+
     public function setSecurityLevel($securityLevel) {
         if (!isset ($securityLevel))
             throw new DooAuthException("Security level cannot be empty");
-        $this->securityLevel = $securityLevel;        
+        $this->securityLevel = $securityLevel;
     }
-    
+
     public function getSecurityLevel() {
         if (!isset($this->securityLevel))
-            throw new DooAuthException("Security level not defined");        
+            throw new DooAuthException("Security level not defined");
         return $this->securityLevel;
     }
-    
+
     /**
      * Set the duration(in seconds) for auth session to expire
-     * @param integer $duration 
+     * @param integer $duration
      */
     public function setSessionExpire($duration) {
         if (!isset ($duration))
             throw new DooAuthException("Session expire duration cannot be empty");
         $this->authSessionExpire = $duration;
     }
-    
+
     /**
      * Get the duration(in seconds) for auth session to expire
      * @return integer
@@ -328,20 +328,20 @@ class DooAuth {
                     break;
             }
         }
-                        
+
         return $this->authSessionExpire;
     }
-    
+
     /**
      * Set the minimum time-frame(in seconds) for form post to discard spam bots or an automated CSRF attack
-     * @param integer $duration 
+     * @param integer $duration
      */
     public function setFormPostMinTime($duration) {
         if (!isset ($duration))
             throw new DooAuthException("Form post minimum time-frame cannot be empty");
         $this->formPostMinTime = $duration;
     }
-    
+
     /**
      * Get the minimum time-frame(in seconds) for form post to discard spam bots or an automated CSRF attack
      * @return integer
@@ -351,22 +351,22 @@ class DooAuth {
             throw new DooAuthException("Form post minimum time-frame not defined");
         return $this->formPostMinTime;
     }
-    
+
     /**
      * Set the duration(in seconds) for form session to expire
-     * @param integer $duration 
+     * @param integer $duration
      */
     public function setFormSessionExpire($duration) {
         if (!isset ($duration))
             throw new DooAuthException("Form session expire duration cannot be empty");
         $this->formSessionExpire = $duration;
     }
-    
+
     /**
      * Get the duration(in seconds) for form session to expire
      * @return integer
      */
-    public function getFormSessionExpire() {        
+    public function getFormSessionExpire() {
         if(empty($this->formSessionExpire)){
             switch ($this->securityLevel) {
                 case self::LEVEL_HIGH:
@@ -378,12 +378,12 @@ class DooAuth {
                 case self::LEVEL_LOW:
                     return 90 * 60;
                     break;
-            }                        
+            }
         }
-        
+
         return $this->formSessionExpire;
-    }        
-    
+    }
+
     public function isValid() {
         return $this->isValid;
     }
@@ -395,28 +395,28 @@ class DooAuth {
     public function setPostExpire($duration){
         $this->setFormPostMinTime($duration);
     }
-    
+
     /**
      * @deprecated Deprecated since 1.5. Use getFormPostMinTime() instead
      */
     public function getPostExpire(){
         return $this->getFormPostMinTime();
     }
-    
+
     /**
      * @deprecated Deprecated since 1.5. Use setFormSessionExpire() instead
      */
     public function setPostWait($duration){
         $this->setFormSessionExpire($duration);
     }
-    
+
     /**
      * @deprecated Deprecated since 1.5. Use getFormSessionExpire() instead
      */
     public function getPostWait(){
         return $this->getFormSessionExpire();
     }
-    
+
     ////////////////// Magic ////////////////////
     public function  __set($name,  $value) {
         if (!isset ($this->appSession->AuthData))
@@ -431,5 +431,5 @@ class DooAuth {
 }
 
 class DooAuthException extends Exception {
-    
+
 }
