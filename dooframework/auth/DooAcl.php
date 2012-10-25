@@ -92,7 +92,10 @@ class DooAcl {
 		if ($action=='') {
 			return isset($this->rules[$role]['allow'][$resource]);
 		} else {
-			if(isset($this->rules[$role]['allow'][$resource])) {
+			if(isset($this->rules[$role]['allow']) === TRUE
+					&& $this->rules[$role]['allow'] === '*') {
+				return true;
+			} else if(isset($this->rules[$role]['allow'][$resource])) {
 				$actionlist = $this->rules[$role]['allow'][$resource];
 				if ($actionlist==='*')
 					return true;
