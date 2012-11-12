@@ -541,7 +541,7 @@ class Doo{
                         file_put_contents($autoloadConfigFolder.'autoload.php', '<?php return '.var_export($rs, true) . ';');                    
                     }                                
                 }
-                else{
+                else if(file_exists($path . 'config/autoload/autoload.php')){
 					if(isset(self::$_autoloadClassMap)===false)
 						$rs = self::$_autoloadClassMap = include_once($path . 'config/autoload/autoload.php');
 					else
