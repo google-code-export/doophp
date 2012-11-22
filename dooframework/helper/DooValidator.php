@@ -595,7 +595,7 @@ class DooValidator {
     }
 
     /**
-     * Validate a hostname as per RFC 1123.
+     * Validate a hostname as per RFC 952.
      *
      * @param string $value Value of data to be validated
      * @param string $msg Custom error message
@@ -603,7 +603,7 @@ class DooValidator {
      */
     public function testHostname($value, $msg=null){
         //198.168.1.101
-        if (!preg_match('/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/',$value)) {
+        if (!preg_match('/^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$/',$value)) {
             if($msg!==null) return $msg;
             return 'Invalid hostname!';
         }
