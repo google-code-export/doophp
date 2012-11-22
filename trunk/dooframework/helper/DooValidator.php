@@ -135,25 +135,25 @@ class DooValidator {
 	 * Only ensure required fields are non null / accept not null on required
 	 */
 	const REQ_MODE_NULL_ONLY = 'null';
-    
+
     /**
      * Default require message to display field name "first_name is required."
      */
     const REQ_MSG_FIELDNAME = 'fieldname';
-    
+
     /**
      * Default require message to display "This is required."
      */
     const REQ_MSG_THIS = 'this';
-    
+
     /**
      * Default require message to convert field name with underscore to words. eg(field = first_name). "First name is required."
-     */    
+     */
     const REQ_MSG_UNDERSCORE_TO_SPACE = 'underscore';
-    
+
     /**
      * Default require message to convert field name with camelcase to words. eg(field = firstName). "First name is required."
-     */    
+     */
     const REQ_MSG_CAMELCASE_TO_SPACE = 'camelcase';
 
     /**
@@ -167,13 +167,13 @@ class DooValidator {
 	 * @var string empty/null
 	 */
 	public $requireMode = 'nullempty';
-    
+
     /**
      * Default method to generate error message for a required field.
      * @var string
      */
     public $requiredMsgDefaultMethod = 'underscore';
-    
+
     /**
      * Default error message suffix for a required field.
      * @var string
@@ -374,7 +374,7 @@ class DooValidator {
             return $errors;
         }
     }
-    
+
     /**
      * Set default settings to display the default error message for required fields
      * @param type $displayMethod Default error message display method. use: DooValidator::REQ_MSG_UNDERSCORE_TO_SPACE, DooValidator::REQ_MSG_CAMELCASE_TO_SPACE, DooValidator::REQ_MSG_THIS, DooValidator::REQ_MSG_FIELDNAME
@@ -384,7 +384,7 @@ class DooValidator {
         $this->requiredMsgDefaultMethod = $displayMethod;
         $this->requiredMsgDefaultSuffix = $suffix;
     }
-    
+
     /**
      * Get the default error message for required field
      * @param string $fieldname Name of the field
@@ -393,13 +393,13 @@ class DooValidator {
     public function getRequiredFieldDefaultMsg($fieldname){
         if($this->requiredMsgDefaultMethod==DooValidator::REQ_MSG_UNDERSCORE_TO_SPACE)
             return ucfirst(str_replace('_', ' ', $fieldname)) . $this->requiredMsgDefaultSuffix;
-        
+
         if($this->requiredMsgDefaultMethod==DooValidator::REQ_MSG_THIS)
-            return 'This ' . $this->requiredMsgDefaultSuffix;        
-        
+            return 'This ' . $this->requiredMsgDefaultSuffix;
+
         if($this->requiredMsgDefaultMethod==DooValidator::REQ_MSG_CAMELCASE_TO_SPACE)
             return ucfirst(strtolower(preg_replace('/([A-Z])/', ' $1', $fieldname))) . $this->requiredMsgDefaultSuffix;
-        
+
         if($this->requiredMsgDefaultMethod==DooValidator::REQ_MSG_FIELDNAME)
             return $fieldname . $this->requiredMsgDefaultSuffix;
     }
@@ -591,6 +591,21 @@ class DooValidator {
         if (!preg_match('/^(([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/',$value)) {
             if($msg!==null) return $msg;
             return 'Invalid IP address!';
+        }
+    }
+
+    /**
+     * Validate a hostname as per RFC 1123.
+     *
+     * @param string $value Value of data to be validated
+     * @param string $msg Custom error message
+     * @return string
+     */
+    public function testHostname($value, $msg=null){
+        //198.168.1.101
+        if (!preg_match('/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/',$value)) {
+            if($msg!==null) return $msg;
+            return 'Invalid hostname!';
         }
     }
 
