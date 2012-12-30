@@ -603,7 +603,7 @@ class DooValidator {
      */
     public function testHostname($value, $msg=null){
         //198.168.1.101
-        if (!preg_match('/^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)(([a-zA-Z0-9])([a-zA-Z0-9\-])*\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$/',$value)) {
+        if (!preg_match('/^(?=.{1,255}$)[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?(?:\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?)*\.?$/',$value)) {
             if($msg!==null) return $msg;
             return 'Invalid hostname!';
         }
