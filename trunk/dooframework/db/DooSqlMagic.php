@@ -424,7 +424,7 @@ class DooSqlMagic {
     */
     public function fetchKeyValue($query, $param=null) {
       $stmt = $this->query($query, $param);
-      $stmt->setFetchMode(PDO::FETCH_KEY_PAIR, 0);
+      $stmt->setFetchMode(PDO::FETCH_KEY_PAIR);
       return $stmt->fetchAll();
     }
 
