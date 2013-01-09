@@ -148,7 +148,7 @@ class DooSqlMagic {
             if ($this->dbconfig[4]=='sqlite')
                 $this->pdo = new PDO("{$this->dbconfig[4]}:{$this->dbconfig[0]}");
             else if ($this->dbconfig[4]=='oci')
-                $this->pdo = new PDO("oci:dbname=//{$this->dbconfig[0]}/{$this->dbconfig[1]}", $this->dbconfig[2], $this->dbconfig[3],array(PDO::ATTR_PERSISTENT => $this->dbconfig[5]));                
+                $this->pdo = new PDO("oci:dbname=//{$this->dbconfig[0]}/{$this->dbconfig[1]}", $this->dbconfig[2], $this->dbconfig[3],array(PDO::ATTR_PERSISTENT => $this->dbconfig[5]));
             else
                 $this->pdo = new PDO("{$this->dbconfig[4]}:host={$this->dbconfig[0]};dbname={$this->dbconfig[1]}", $this->dbconfig[2], $this->dbconfig[3],array(PDO::ATTR_PERSISTENT => $this->dbconfig[5]));
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -181,7 +181,7 @@ class DooSqlMagic {
             if ($dbconfig[4]=='sqlite')
                 $this->pdo = new PDO("{$dbconfig[4]}:{$dbconfig[0]}");
             else if ($this->dbconfig[4]=='oci')
-                $this->pdo = new PDO("oci:dbname=//{$this->dbconfig[0]}/{$this->dbconfig[1]}", $this->dbconfig[2], $this->dbconfig[3],array(PDO::ATTR_PERSISTENT => $this->dbconfig[5]));                
+                $this->pdo = new PDO("oci:dbname=//{$this->dbconfig[0]}/{$this->dbconfig[1]}", $this->dbconfig[2], $this->dbconfig[3],array(PDO::ATTR_PERSISTENT => $this->dbconfig[5]));
             else
                 $this->pdo = new PDO("{$dbconfig[4]}:host={$dbconfig[0]};dbname={$dbconfig[1]}", $dbconfig[2], $dbconfig[3],array(PDO::ATTR_PERSISTENT => $dbconfig[5]));
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -194,7 +194,7 @@ class DooSqlMagic {
             }
         }catch(PDOException $e){
             if(Doo::conf()->APP_MODE=='dev')
-                throw $e;        
+                throw $e;
             throw new SqlMagicException('Failed to open the DB connection', SqlMagicException::DBConnectionError);
         }
     }
@@ -213,7 +213,7 @@ class DooSqlMagic {
 	public function setConnectionTimeout($timeout=60) {
 		$this->query("SET SESSION wait_timeout = ?", array($timeout));
 	}
-	
+
     /**
      * Close a database connection
      */
@@ -323,16 +323,16 @@ class DooSqlMagic {
 			}
 		}
 
-		if($param==null) 
+		if($param==null)
 			$stmt->execute();
 	  else {
       $this->bindArrayValue($stmt, $param);
 			$stmt->execute();
     }
-		
+
 		return $stmt;
     }
-    
+
     /*
     * Binds parameters according to their type.
     * @param PDOStatement $req PDOStatement object.
@@ -413,6 +413,18 @@ class DooSqlMagic {
     public function fetchColumn($query, $param=null) {
       $stmt = $this->query($query, $param);
       $stmt->setFetchMode(PDO::FETCH_COLUMN, 0);
+      return $stmt->fetchAll();
+    }
+
+    /*
+    * Execute a query and Fetch key value assoc array
+    * @param string $query SQL query prepared statement
+    * @param array $param Values used in the prepared SQL
+    * @return array Returns a assoc array.
+    */
+    public function fetchKeyValue($query, $param=null) {
+      $stmt = $this->query($query, $param);
+      $stmt->setFetchMode(PDO::FETCH_KEY_PAIR, 0);
       return $stmt->fetchAll();
     }
 
@@ -2052,9 +2064,9 @@ class DooSqlMagic {
 
         $sql ="INSERT INTO {$obj['_table']} ($fieldstr) VALUES ($valuestr)";
         $this->query($sql, $values);
-        
+
         if ($this->dbconfig[4] == 'pgsql') {
-            return $this->pdo->lastInsertId($model->_primarykey);            
+            return $this->pdo->lastInsertId($model->_primarykey);
         }
         return $this->pdo->lastInsertId();
     }
@@ -2110,8 +2122,8 @@ class DooSqlMagic {
         $sql ="INSERT INTO {$model->_table} ($fieldstr) VALUES ($valuestr)";
         $this->query($sql, $values);
         if ($this->dbconfig[4] == 'pgsql') {
-            return $this->pdo->lastInsertId($model->_primarykey);            
-        }        
+            return $this->pdo->lastInsertId($model->_primarykey);
+        }
         return $this->pdo->lastInsertId();
     }
 
@@ -2278,7 +2290,7 @@ class DooSqlMagic {
     public function update_attributes($model, $data, $opt=NULL){
         return $this->updateAttributes($model, $data, $opt);
     }
-    
+
     /**
      * Update an existing record with a list of keys & values (assoc array). (Prepares and execute the UPDATE statements)
      * @param mixed $model The model object to be updated.
