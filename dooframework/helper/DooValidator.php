@@ -610,6 +610,21 @@ class DooValidator {
     }
 
     /**
+     * Validate a subdomain.
+     *
+     * @param string $value Value of data to be validated
+     * @param string $msg Custom error message
+     * @return string
+     */
+    public function testSubdomain($value, $msg=null){
+        //something.example.com
+        if (!preg_match('/^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+){2}$/',$value)) {
+            if($msg!==null) return $msg;
+            return 'Invalid subdomain!';
+        }
+    }
+
+    /**
      * Validate a credit card number
      *
      * @param string $value Value of data to be validated
