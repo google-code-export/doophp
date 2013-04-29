@@ -206,7 +206,7 @@ class DooValidator {
                     'ccVisa', 'colorHex', 'creditCard', 'custom', 'date', 'dateBetween', 'datetime', 'digit', 'email', 'equal', 'equalAs', 'float',
                     'greaterThan', 'greaterThanOrEqual', 'hostname', 'ip', 'integer', 'lessThan', 'lessThanOrEqual', 'lowercase', 'max',
                     'maxlength', 'min', 'minlength', 'notEmpty', 'notEqual', 'notNull', 'password', 'passwordComplex', 'price', 'regex',
-                    'uppercase', 'url', 'username','dbExist','dbNotExist','alphaSpace','notInList','inList'
+                    'uppercase', 'url', 'username','dbExist','dbNotExist','alphaSpace','notInList','inList', 'serverName'
                 );
     }
 
@@ -602,10 +602,25 @@ class DooValidator {
      * @return string
      */
     public function testHostname($value, $msg=null){
-        //198.168.1.101
+        //1mx.record.com
         if (!preg_match('/^(?=.{1,255}$)[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?(?:\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?)*\.?$/',$value)) {
             if($msg!==null) return $msg;
             return 'Invalid hostname!';
+        }
+    }
+
+    /**
+     * Validate a server name that does not allow numbers at the start.
+     *
+     * @param string $value Value of data to be validated
+     * @param string $msg Custom error message
+     * @return string
+     */
+    public function testServerName($value, $msg=null){
+        //server.example.com
+        if (!preg_match('/^[A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?(?:\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?)*\.?$/',$value)) {
+            if($msg!==null) return $msg;
+            return 'Invalid server name!';
         }
     }
 
