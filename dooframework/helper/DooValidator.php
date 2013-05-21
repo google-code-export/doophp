@@ -35,8 +35,8 @@
  *               'email'=>array('email'),
  *               'age'=>array('between',13,200),
  *               'today'=>array('date','mm/dd/yy'),
- *
- *               //Custom rules, static method required
+ 
+* *               //Custom rules, static method required
  *               'a'=>array('custom', 'MainController::isA'),
  *
  *               //Custom Required field message.
@@ -618,7 +618,7 @@ class DooValidator {
      */
     public function testServerName($value, $msg=null){
         //server.example.com
-        if (!preg_match('/^[A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?(?:\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?)*\.?$/',$value)) {
+        if (!preg_match('/^[A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?(?:\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?)*$/',$value)) {
             if($msg!==null) return $msg;
             return 'Invalid server name!';
         }
