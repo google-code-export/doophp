@@ -428,6 +428,19 @@ class DooSqlMagic {
       return $stmt->fetchAll();
     }
 
+    /*
+    * Execute a query and Fetch key values assoc array
+    * @param string $query SQL query prepared statement
+    * @param array $param Values used in the prepared SQL
+    * @return array Returns a assoc array.
+    */
+    public function fetchKeyValues($query, $param=null) {
+      $stmt = $this->query($query, $param);
+      $res = $stmt->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
+      $res = array_map('reset', $res);
+      return $res;
+    }
+
    /*
     * Execute a query and Fetch multiple rows
     * @param string $query SQL query prepared statement
