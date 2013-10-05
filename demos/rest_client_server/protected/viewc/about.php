@@ -2,29 +2,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-        <?php include "header.php"; ?>
+        <?php include Doo::conf()->SITE_PATH .  Doo::conf()->PROTECTED_FOLDER . "viewc//header.php"; ?>
     </head>
 	<body>
-      <?php include "nav.php"; ?>
+      <?php include Doo::conf()->SITE_PATH .  Doo::conf()->PROTECTED_FOLDER . "viewc//nav.php"; ?>
 	  <div class="content">
 	  	<h1>Welcome to REST Client Server Demo</h1>
 		<p class="normal">Here you can learn about how to make REST server/client with DooPHP.</p>
 		<p class="normal">Check out the links page for a list of URLs available in this demo. 
         Download Firefox <a href="https://addons.mozilla.org/firefox/addon/2691" class="file">Poster addon</a> for quick testing of POST/PUT/DELETE request.</p>
         <p class="normal">Download the <a class="file" href="http://doophp.com/download">source</a>.</p>
-		<p class="boldy"><a name="auto_routing" id="auto_routing"></a>Test drive REST request to Twitter API:</p>
-        <pre>
-# Check out <a href="http://apiwiki.twitter.com/HTTP-Response-Codes-and-Errors">Twitter Response Code</a>
-# This link get the daily search trend from Twitter
-<a href="<?php echo $data['baseurl']; ?>index.php/client/twitter/daily_trends">/client/twitter/daily_trends</a>
-
-# This link get the followers of <a href="http://twitter.com/doophp">Doophp</a> from Twitter
-<a href="<?php echo $data['baseurl']; ?>index.php/client/twitter/follower">/client/twitter/follower</a>
-
-# This link posts an update to your Twitter, replace the parameters.
-<a href="<?php echo $data['baseurl']; ?>index.php/client/twitter/post/:username/:password/:message">/client/twitter/post/:username/:password/:message</a>
-        </pre>
-
+		
 		<p class="boldy"><a name="extension_name" id="extension_name"></a>Test drive REST APIs built with DooPHP:</p>
         <pre>
 # The code for the REST API is in RestServerController

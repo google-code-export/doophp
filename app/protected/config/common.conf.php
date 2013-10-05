@@ -28,9 +28,8 @@ $config['SUBFOLDER'] = str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace('\
 if(strpos($config['SUBFOLDER'], '/')!==0){
 	$config['SUBFOLDER'] = '/'.$config['SUBFOLDER'];
 }
-
 $config['APP_URL'] = 'http://'.$_SERVER['HTTP_HOST'].$config['SUBFOLDER'];
-//$config['AUTOROUTE'] = TRUE;
+$config['AUTOROUTE'] = TRUE;
 $config['DEBUG_ENABLED'] = TRUE;
 
 //$config['TEMPLATE_COMPILE_ALWAYS'] = TRUE;
