@@ -1,0 +1,5 @@
+DooPHP Framework Change Log
+===========================
+
+Version 1.5 October 6, 2013
+Lots of bug fixes and features improved. MongoDB support added. More info see https://code.google.com/p/doophp/source/list
