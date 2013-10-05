@@ -261,6 +261,12 @@ class DooUriRouter{
 
 		// Remove Subfolder
 		$requestedUri = substr($requestedUri, strlen($subfolder)-1);
+		if($requestedUri === false){
+			$requestedUri = substr($requestedUri . '/', strlen($subfolder)-1);	
+			if($requestedUri===false){
+				$requestedUri = '/';	
+			}		
+		}
 		//$this->log('Trimmed off subfolder from Request Uri to give: ' . $requestedUri);
 
 		// Remove index.php from URL if it exists
