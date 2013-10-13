@@ -177,6 +177,10 @@ class DooWebApp{
                 return;
             }
 
+            if(empty($this->route['autoroute_force_dash'])===false && strpos($moduleName, '-')!==false){
+                $moduleName = str_replace('-', '_', $moduleName);
+            }
+            
             if(isset($moduleName)===true){
                 Doo::conf()->PROTECTED_FOLDER_ORI = Doo::conf()->PROTECTED_FOLDER;
                 Doo::conf()->PROTECTED_FOLDER = Doo::conf()->PROTECTED_FOLDER_ORI . 'module/'.$moduleName.'/';
