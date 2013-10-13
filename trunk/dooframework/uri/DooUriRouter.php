@@ -688,9 +688,20 @@ class DooUriRouter{
         $uri = explode('/',$uri);
 
         $module = null;
-        if(isset(Doo::conf()->MODULES)===true && in_array($uri[0], Doo::conf()->MODULES)===true){
-            $module = $uri[0];
-            array_shift($uri);
+        if(isset(Doo::conf()->MODULES)===true){
+            if(in_array($uri[0], Doo::conf()->MODULES)===true){
+                $module = $uri[0];
+                array_shift($uri);
+            }
+            //allow modules to be accessed with dash, if the module name consists of underscore
+            else if(empty(Doo::app()->route['autoroute_force_dash'])===false){
+                $moduleRemUnderscore = explode("\t", str_replace('_', '-', implode("\t", Doo::conf()->MODULES)));
+
+                if(in_array($uri[0], $moduleRemUnderscore)===true){
+                    $module = $uri[0];
+                    array_shift($uri);
+                }
+            }
         }
 
         //if controller and method not found.
