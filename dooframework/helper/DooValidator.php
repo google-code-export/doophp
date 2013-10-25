@@ -35,7 +35,7 @@
  *               'email'=>array('email'),
  *               'age'=>array('between',13,200),
  *               'today'=>array('date','mm/dd/yy'),
- 
+
 * *               //Custom rules, static method required
  *               'a'=>array('custom', 'MainController::isA'),
  *
@@ -206,7 +206,7 @@ class DooValidator {
                     'ccVisa', 'colorHex', 'creditCard', 'custom', 'date', 'dateBetween', 'datetime', 'digit', 'email', 'equal', 'equalAs', 'float',
                     'greaterThan', 'greaterThanOrEqual', 'hostname', 'ip', 'integer', 'lessThan', 'lessThanOrEqual', 'lowercase', 'max',
                     'maxlength', 'min', 'minlength', 'notEmpty', 'notEqual', 'notNull', 'password', 'passwordComplex', 'price', 'regex',
-                    'uppercase', 'url', 'username','dbExist','dbNotExist','alphaSpace','notInList','inList', 'serverName'
+                    'uppercase', 'url', 'username','dbExist','dbNotExist','alphaSpace','notInList','inList', 'serverName', 'array', 'boolean', 'domain'
                 );
     }
 
@@ -1262,5 +1262,61 @@ class DooValidator {
             return 'Value '.$value.' is not equal with "'.$field.'".';
 		}
 	}
+
+    /**
+     * Validate value if it's type of an array.
+     *
+     * @param mixed  $value Value of data to be validated
+     * @param string $msg Custom error message
+     * @return string
+     */
+    public function testArray($value, $msg=null) {
+        if (is_array($value) === false) {
+            if($msg === null) {
+                return 'Variable is not type of an array.';
+            }
+
+            return $msg;
+        }
+
+    }
+
+    /**
+     * Validate value if it's type of a boolean.
+     *
+     * @param mixed  $value Value of data to be validated
+     * @param string $msg Custom error message
+     * @return string
+     */
+    public function testBoolean($value, $msg=null) {
+        if (is_bool($value) === false) {
+            if($msg === null) {
+                return 'Variable is not type of a boolean.';
+            }
+
+            return $msg;
+        }
+
+    }
+
+    /**
+     * Validate domain name.
+     *
+     * @param mixed  $value Value of data to be validated
+     * @param string $msg Custom error message
+     * @return string
+     */
+    public function testDomain($value, $msg=null) {
+        $pattern = '/^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}$/';
+
+        if ((bool) preg_match($pattern, $value) === false) {
+            if($msg === null) {
+                return 'Invalid domain name.';
+            }
+
+            return $msg;
+        }
+
+    }
 
 }
