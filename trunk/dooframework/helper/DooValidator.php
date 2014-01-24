@@ -206,7 +206,7 @@ class DooValidator {
                     'ccVisa', 'colorHex', 'creditCard', 'custom', 'date', 'dateBetween', 'datetime', 'digit', 'email', 'equal', 'equalAs', 'float',
                     'greaterThan', 'greaterThanOrEqual', 'hostname', 'ip', 'integer', 'lessThan', 'lessThanOrEqual', 'lowercase', 'max',
                     'maxlength', 'min', 'minlength', 'notEmpty', 'notEqual', 'notNull', 'password', 'passwordComplex', 'price', 'regex',
-                    'uppercase', 'url', 'username','dbExist','dbNotExist','alphaSpace','notInList','inList', 'serverName', 'array', 'boolean', 'domain'
+                    'uppercase', 'url', 'username','dbExist','dbNotExist','alphaSpace','notInList','inList', 'serverName', 'array', 'boolean', 'domain', 'startswith'
                 );
     }
 
@@ -1084,6 +1084,23 @@ class DooValidator {
             return "Value must be between $min and $max.";
         }
     }
+
+
+    /**
+     * Validate if value starts with specified phrase
+     *
+     * @param string $value Value of data to be validated
+     * @param int $equalsto Starting value
+     * @param string $msg Custom error message
+     * @return string
+     */
+    public function testStartsWith($value, $equalsto, $msg=null){
+        if( substr( $value, 0, strlen($equalsto) ) !== $equalsto){
+            if($msg!==null) return $msg;
+            return "Input does not start with $equalsto.";
+        }
+    }
+
 
     /**
      * Validate if a value is greater than a number
