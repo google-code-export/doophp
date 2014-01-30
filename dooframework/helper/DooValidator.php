@@ -1090,15 +1090,23 @@ class DooValidator {
      * Validate if value starts with specified phrase
      *
      * @param string $value Value of data to be validated
-     * @param int $equalsto Starting value
+     * @param array  $equalsto Starting values
      * @param string $msg Custom error message
      * @return string
      */
     public function testStartsWith($value, $equalsto, $msg=null){
-        if( substr( $value, 0, strlen($equalsto) ) !== $equalsto){
-            if($msg!==null) return $msg;
-            return "Input does not start with $equalsto.";
+      $nomatch = true;
+      foreach($equalsto as $string) {
+        if( substr( $value, 0, strlen($string) ) === $string){
+          $nomatch = false;
+          break 1;
         }
+      }
+
+      if ($nomatch === true) {
+        if($msg!==null) return $msg;
+        return "Incorrect email.";
+      }
     }
 
 
