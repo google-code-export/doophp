@@ -89,7 +89,7 @@ class DooSession {
 		if ($this->_sessionStarted) {
 			return;
 		}
-		session_start();
+		if(!$this->isPhpSessionActive()) session_start();
 		$_SESSION[$this->_namespace]['session_id'] = $this->getId();
 		$this->_sessionStarted = true;
 	}
@@ -101,14 +101,14 @@ class DooSession {
 	* @return void
 	*/
 	public function startNew() {
-    session_regenerate_id(TRUE);
-    session_destroy();
-    unset($_SESSION);
-    $this->start();
+		session_regenerate_id(TRUE);
+		session_destroy();
+		unset($_SESSION);
+		$this->start();
 	}
 
 	/**
-	* Checks if session started
+	* Checks if session started - referring to what's been set up by this class (as opposed to plain PHP session)
 	*
 	* @return boolean
 	*/
@@ -119,6 +119,27 @@ class DooSession {
 		} else {
 			return false;
 		}
+	}
+	
+	
+	/**
+	* Checks if session is active - referring to plain PHP session (as opposed to what's been set up by this class).
+	* This is an important distinctin because the session might have been stopped by a piece of code (e.g., by a 3rd party library).
+	* Also, using session_status(), when available, is important because depending on $_SESSION, session_id(), and the SID constant
+	* to determine if a session is active will FAIL if a session has previously been opened & closed within the same request cycle.
+	* [http://www.php.net/manual/en/function.session-status.php#112888]
+	*
+	* @return boolean
+	*/
+	public function isPhpSessionActive()
+	{
+		// for PHP >= 5.4
+		if (function_exists('session_status')) {
+			if(session_status() === PHP_SESSION_ACTIVE) return true;
+			else return false;
+		}
+		elseif(!empty($_SESSION)) return true;
+		else return false;
 	}
 
 	/**
