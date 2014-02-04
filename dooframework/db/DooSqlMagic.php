@@ -241,10 +241,10 @@ class DooSqlMagic {
     public function commit() {
         $this->transactionLevel--;
         if($this->transactionLevel === 0){
-            $this->pdo->commit();
+            return $this->pdo->commit();
         }
         else{
-            $this->pdo->exec("RELEASE SAVEPOINT LEVEL{$this->transactionLevel}");
+            return $this->pdo->exec("RELEASE SAVEPOINT LEVEL{$this->transactionLevel}");
         }
     }
 
@@ -254,10 +254,10 @@ class DooSqlMagic {
     public function rollBack() {
         $this->transactionLevel--;
         if($this->transactionLevel === 0){
-            $this->pdo->rollBack();
+            return $this->pdo->rollBack();
         }
         else{
-            $this->pdo->exec("ROLLBACK TO SAVEPOINT LEVEL{$this->transactionLevel}");
+            return $this->pdo->exec("ROLLBACK TO SAVEPOINT LEVEL{$this->transactionLevel}");
         }
     }
 
