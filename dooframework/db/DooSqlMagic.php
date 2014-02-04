@@ -227,12 +227,14 @@ class DooSqlMagic {
      */
     public function beginTransaction() {
         if($this->transactionLevel === 0){
+            $this->transactionLevel++;
             return $this->pdo->beginTransaction();
         }
         else{
+            $this->transactionLevel++;
             return $this->pdo->exec("SAVEPOINT LEVEL{$this->transactionLevel}");
         }
-        $this->transactionLevel++;
+
     }
 
     /**
