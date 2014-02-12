@@ -42,6 +42,18 @@ class DooMailer {
 	protected $_to = array();
 
 	/**
+	 * Cc address
+	 * @var string
+	 */
+	protected $_cc = array();
+
+	/**
+	 * Bcc address
+	 * @var string
+	 */
+	protected $_bcc = array();
+
+	/**
 	 * Email subject
 	 * @var string
 	 */
@@ -164,6 +176,28 @@ class DooMailer {
 	}
 
 	/**
+	 * Add email address for cc field
+	 *
+	 * @param string $email Cc email.
+	 */
+	public function addCc($email) {
+		if ($email != "") {
+			$this->_cc[] = $email;
+		}
+	}
+
+	/**
+	 * Add email address for bcc field
+	 *
+	 * @param string $email Bcc email.
+	 */
+	public function addBcc($email, $name=null) {
+		if ($email != "") {
+			$this->_bcc[] = $email;
+		}
+	}
+
+	/**
 	 * Add attachment to email
 	 *
 	 * @var string $file
@@ -188,7 +222,7 @@ class DooMailer {
 					'file_data' => $data
 				)
 			);
-			
+
 			$this->hasAttachments = true;
 		}
 	}
@@ -248,7 +282,7 @@ class DooMailer {
 			$body.= $this->_bodyText;
 			$body.= $this->_headerEOL . $this->_headerEOL;
 		}
-		
+
 		if ($this->_bodyHtml !== false) {
 			$body.= "--{$boundryAlt}" . $this->_headerEOL;
 			$body.= "Content-Type: text/html; charset=\"{$this->_charset}\"" . $this->_headerEOL;
