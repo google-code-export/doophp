@@ -138,7 +138,7 @@ class DooSession {
 			if(session_status() === PHP_SESSION_ACTIVE) return true;
 			else return false;
 		}
-		elseif(!empty($_SESSION)) return true;
+		elseif(session_id()) return true;
 		else return false;
 	}
 
